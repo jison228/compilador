@@ -81,11 +81,11 @@ sentencia           ::= declaracion
                     | get 
                     {:
                          System.out.println("sentencia -> get");
-                    :};
+                    :}
                     | for 
                     {:
                          System.out.println("sentencia -> for");
-                    :};
+                    :}
                     | long 
                     {:
                          System.out.println("sentencia -> long");
@@ -128,7 +128,7 @@ identificadores     ::= IDENTIFICADOR:ID
                     | IDENTIFICADOR OP_COMA IDENTIFICADOR:ID
                     {:
                          this.identifierList.add(ID);
-                    :}
+                    :};
 /*
             ASIGNACION
 */
@@ -159,7 +159,7 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
                          tablaDeSimbolos.add("_"+str, null, str, str.length());
                     :}
                     | PAREN_OPEN expresion PAREN_CLOSE 
-                    | IDENTIFICADOR
+                    | IDENTIFICADOR;
 
 /*
             IF/ELSE/CONDITION
@@ -196,10 +196,10 @@ while               ::= WHILE PAREN_OPEN condicion PAREN_CLOSE programa ENDWHILE
 /*
             display
 */
-display               ::= display expresion
+display             ::= display expresion
                     {:
                          System.out.println("display -> display expresion");
-                    :}
+                    :};
 /*
             get
 */
