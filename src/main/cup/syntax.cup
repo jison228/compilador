@@ -43,7 +43,7 @@ terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHE
 terminal String IDENTIFICADOR;
 
 // Declaracion de no terminales
-non terminal Symbol inicio, programa, declaracion, declaraciones, declarar, tipodedato, identificadores, sentencia, asignacion, expresion, termino, factor, 
+non terminal Symbol inicio, programa, declaracion, tiposdedato ,tipodedato, identificadores, sentencia, asignacion, expresion, termino, factor, 
                     condicion, comparacion, if, while, display, get, for, long;
 
 start with inicio;
@@ -95,19 +95,20 @@ sentencia           ::= declaracion
             DECLARACIONES
 */
 
-declaracion         ::= DIM CORCHETE_OPEN identificadores CORCHETE_CLOSE OP_TIPO CORCHETE_OPEN tiposdedato CORCHETE_CLOSE;
+declaracion         ::= DIM CORCHETE_OPEN identificadores CORCHETE_CLOSE OP_TIPO CORCHETE_OPEN tiposdedato CORCHETE_CLOSE
                     {: 
                          System.out.println("declaracion -> DIM declaracion ");
                     :};
 
 tiposdedato          ::= tipodedato
                     {:
-                         System.out.println("declaracion -> Tipo de dato simple ");
+                         System.out.println("tiposdedato -> Tipo de dato simple ");
                     :}
                     | tipodedato OP_COMA tipodedato
                     {:
-                         System.out.println("declaracion -> Tipo de dato en lista ");
-                    :}
+                         System.out.println("tiposdedato -> Tipo de dato en lista ");
+                    :};
+                    
 tipodedato          ::= INTEGER_TYPE
                     {:
                          tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
