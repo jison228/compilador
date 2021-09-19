@@ -37,7 +37,7 @@ terminal String OP_GT, OP_LT, OP_GTE, OP_LTE, OP_PLUS, OP_MINUS, OP_MULTI, OP_DI
                 OP_NE, OP_NOT, OP_AND, OP_OR, OP_ASIG, OP_EQ, OP_TIPO;
 
 // Declaracion de terminales de caracteres especiales
-terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHETE_CLOSE;
+terminal String COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHETE_CLOSE;
 
 // Declaracion de construcciones del lenguaje
 terminal String IDENTIFICADOR;
@@ -197,14 +197,14 @@ while               ::= WHILE PAREN_OPEN condicion PAREN_CLOSE programa ENDWHILE
 /*
             display
 */
-display             ::= display expresion
+display             ::= DISPLAY expresion
                     {:
                          System.out.println("display -> display expresion");
                     :};
 /*
             get
 */
-get                ::= get IDENTIFICADOR
+get                ::= GET IDENTIFICADOR
                     {:
                          System.out.println("get -> get IDENTIFICADOR");
                     :};
