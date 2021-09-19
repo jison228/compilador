@@ -34,7 +34,7 @@ DIGITO 	    =	[0-9]
 LETRA 	    =	[a-zA-Z]
 
 // Construcciones del lenguaje
-COMMENT = "*/"({DIGITO}|{LETRA}|{WhiteSpace})*"/*"
+COMMENT = "*/" ~"/*"
 IDENTIFICADOR = {LETRA}[a-zA-Z0-9]*
 
 // Constantes
@@ -78,7 +78,6 @@ OP_TIPO = "AS"
 
 // Caracteres especiales
 COMA = ","
-PUNTO_COMA = ";"
 PAREN_OPEN = "("
 PAREN_CLOSE = ")"
 CORCHETE_OPEN = "["
@@ -124,7 +123,6 @@ CORCHETE_CLOSE = "]"
 
 // Caracteres especiales
 {COMA}                         { return symbol(Simbolos.COMA); }
-{PUNTO_COMA}                   { return symbol(Simbolos.PUNTO_COMA); }
 {PAREN_OPEN}                   { return symbol(Simbolos.PAREN_OPEN); }
 {PAREN_CLOSE}                  { return symbol(Simbolos.PAREN_CLOSE); }
 {CORCHETE_OPEN}                { return symbol(Simbolos.CORCHETE_OPEN); }

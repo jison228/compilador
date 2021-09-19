@@ -37,13 +37,13 @@ terminal String OP_GT, OP_LT, OP_GTE, OP_LTE, OP_PLUS, OP_MINUS, OP_MULTI, OP_DI
                 OP_NE, OP_NOT, OP_AND, OP_OR, OP_ASIG, OP_EQ, OP_TIPO;
 
 // Declaracion de terminales de caracteres especiales
-terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHETE_CLOSE;
+terminal String COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHETE_CLOSE;
 
 // Declaracion de construcciones del lenguaje
 terminal String IDENTIFICADOR;
 
 // Declaracion de no terminales
-non terminal Symbol inicio, programa, declaracion, declaraciones, declarar, tipodedato, identificadores, sentencia, asignacion, expresion, termino, factor, 
+non terminal Symbol inicio, programa, declaracion, tiposdedato ,tipodedato, identificadores, sentencia, asignacion, expresion, termino, factor, 
                     condicion, comparacion, if, while, display, get, for, long;
 
 start with inicio;
@@ -81,11 +81,11 @@ sentencia           ::= declaracion
                     | get 
                     {:
                          System.out.println("sentencia -> get");
-                    :};
+                    :}
                     | for 
                     {:
                          System.out.println("sentencia -> for");
-                    :};
+                    :}
                     | long 
                     {:
                          System.out.println("sentencia -> long");
@@ -95,19 +95,20 @@ sentencia           ::= declaracion
             DECLARACIONES
 */
 
-declaracion         ::= DIM CORCHETE_OPEN identificadores CORCHETE_CLOSE OP_TIPO CORCHETE_OPEN tiposdedato CORCHETE_CLOSE;
+declaracion         ::= DIM CORCHETE_OPEN identificadores CORCHETE_CLOSE OP_TIPO CORCHETE_OPEN tiposdedato CORCHETE_CLOSE
                     {: 
                          System.out.println("declaracion -> DIM declaracion ");
                     :};
 
 tiposdedato          ::= tipodedato
                     {:
-                         System.out.println("declaracion -> Tipo de dato simple ");
+                         System.out.println("tiposdedato -> Tipo de dato simple ");
                     :}
-                    | tipodedato OP_COMA tipodedato
+                    | tiposdedato COMA tipodedato
                     {:
-                         System.out.println("declaracion -> Tipo de dato en lista ");
-                    :}
+                         System.out.println("tiposdedato -> Tipo de dato en lista ");
+                    :};
+                    
 tipodedato          ::= INTEGER_TYPE
                     {:
                          tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
@@ -125,10 +126,10 @@ identificadores     ::= IDENTIFICADOR:ID
                     {:
                          this.identifierList.add(ID);
                     :}
-                    | IDENTIFICADOR OP_COMA IDENTIFICADOR:ID
+                    | identificadores COMA IDENTIFICADOR:ID
                     {:
                          this.identifierList.add(ID);
-                    :}
+                    :};
 /*
             ASIGNACION
 */
@@ -159,7 +160,7 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
                          tablaDeSimbolos.add("_"+str, null, str, str.length());
                     :}
                     | PAREN_OPEN expresion PAREN_CLOSE 
-                    | IDENTIFICADOR
+                    | IDENTIFICADOR;
 
 /*
             IF/ELSE/CONDITION
@@ -196,25 +197,25 @@ while               ::= WHILE PAREN_OPEN condicion PAREN_CLOSE programa ENDWHILE
 /*
             display
 */
-display               ::= display expresion
+display             ::= DISPLAY expresion
                     {:
                          System.out.println("display -> display expresion");
-                    :}
+                    :};
 /*
             get
 */
-get                ::= get IDENTIFICADOR
+get                ::= GET IDENTIFICADOR
                     {:
                          System.out.println("get -> get IDENTIFICADOR");
                     :};
 /*
             for
 */
-for                ::= FOR asignacion TO expresion programa NEXT identificador
+for                ::= FOR asignacion TO expresion programa NEXT IDENTIFICADOR
                     {:
                          System.out.println("for -> for asignacion TO expresion programa NEXT identificador");
                     :}
-					| FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA CORCHETE_CLOSE programa NEXT identificador
+					| FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA CORCHETE_CLOSE programa NEXT IDENTIFICADOR
                     {:
                          System.out.println("for -> FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA CORCHETE_CLOSE programa NEXT identificador");
                     :};
