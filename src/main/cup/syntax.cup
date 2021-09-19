@@ -215,7 +215,7 @@ for                ::= FOR asignacion TO expresion programa NEXT IDENTIFICADOR
                     {:
                          System.out.println("for -> for asignacion TO expresion programa NEXT identificador");
                     :}
-					| FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA CORCHETE_CLOSE programa NEXT identificador
+					| FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA CORCHETE_CLOSE programa NEXT IDENTIFICADOR
                     {:
                          System.out.println("for -> FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA CORCHETE_CLOSE programa NEXT identificador");
                     :};
