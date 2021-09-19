@@ -30,21 +30,21 @@ parser code
 terminal String CONSTANTE_ENTERA, CONSTANTE_FLOAT, CONSTANTE_STRING;
 
 // Declaracion de terminales de palabras reservadas
-terminal String IF, ELSE, WHILE, DIM, DISPLAY, GET, INTEGER_TYPE, FLOAT_TYPE, STRING_TYPE;
+terminal String IF, ELSE, WHILE, DIM, DISPLAY, GET, INTEGER_TYPE, FLOAT_TYPE, STRING_TYPE, FOR, NEXT, TO, LONG, ENDIF, ENDWHILE;
 
 // Declaracion de terminales de operadores lógicos
 terminal String OP_GT, OP_LT, OP_GTE, OP_LTE, OP_PLUS, OP_MINUS, OP_MULTI, OP_DIVISION,
                 OP_NE, OP_NOT, OP_AND, OP_OR, OP_ASIG, OP_EQ, OP_TIPO;
 
 // Declaracion de terminales de caracteres especiales
-terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHETE_CLOSE, LLAVE_OPEN, LLAVE_CLOSE;
+terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHETE_CLOSE;
 
 // Declaracion de construcciones del lenguaje
 terminal String IDENTIFICADOR;
 
 // Declaracion de no terminales
 non terminal Symbol inicio, programa, declaracion, declaraciones, declarar, tipodedato, identificadores, sentencia, asignacion, expresion, termino, factor, 
-                    condicion, comparacion, if, while, display, get;
+                    condicion, comparacion, if, while, display, get, for, long;
 
 start with inicio;
 
@@ -82,21 +82,32 @@ sentencia           ::= declaracion
                     {:
                          System.out.println("sentencia -> get");
                     :};
+                    | for 
+                    {:
+                         System.out.println("sentencia -> for");
+                    :};
+                    | long 
+                    {:
+                         System.out.println("sentencia -> long");
+                    :};
 
 /*
             DECLARACIONES
 */
 
-declaracion         ::= declaraciones
+declaracion         ::= DIM CORCHETE_OPEN identificadores CORCHETE_CLOSE OP_TIPO CORCHETE_OPEN tiposdedato CORCHETE_CLOSE;
                     {: 
-                         System.out.println("declaracion -> DECVAR declaraciones ENDDEC");
+                         System.out.println("declaracion -> DIM declaracion ");
                     :};
 
-declaraciones      ::= declarar
-                    | declaraciones declarar;
-
-declarar            ::= DIM identificadores OP_TIPO tipodedato;
-
+tiposdedato          ::= tipodedato
+                    {:
+                         System.out.println("declaracion -> Tipo de dato simple ");
+                    :}
+                    | tipodedato OP_COMA tipodedato
+                    {:
+                         System.out.println("declaracion -> Tipo de dato en lista ");
+                    :}
 tipodedato          ::= INTEGER_TYPE
                     {:
                          tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
@@ -110,14 +121,18 @@ tipodedato          ::= INTEGER_TYPE
                          tablaDeSimbolos.addIdentifiers(this.identifierList, "STRING");                         
                     :};
 
-identificadores     ::= [(IDENTIFICADOR)(,IDENTIFICADOR)*] AS [tipodedato)(,tipodedato)*]
+identificadores     ::= IDENTIFICADOR:ID
+                    {:
+                         this.identifierList.add(ID);
+                    :}
+                    | IDENTIFICADOR OP_COMA IDENTIFICADOR:ID
                     {:
                          this.identifierList.add(ID);
                     :}
 /*
             ASIGNACION
 */
-asignacion          ::= IDENTIFICADOR OP_ASIG "expresion"
+asignacion          ::= IDENTIFICADOR OP_ASIG expresion
                     {:
                          System.out.println("asignacion -> IDENTIFICADOR OP_ASIG expresion");
                     :};
@@ -128,8 +143,6 @@ expresion           ::= expresion OP_PLUS termino
 
 termino             ::= termino OP_MULTI factor
                     | termino OP_DIVISION factor
-                    | termino MOD factor 
-                    | termino DIV factor
                     | factor;
 
 factor              ::= CONSTANTE_ENTERA:CTE_ENT
@@ -147,19 +160,17 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     :}
                     | PAREN_OPEN expresion PAREN_CLOSE 
                     | IDENTIFICADOR
-                    | PAREN_OPEN mod PAREN_CLOSE
-                    | PAREN_OPEN div PAREN_CLOSE;
 
 /*
             IF/ELSE/CONDITION
 */
-if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE
+if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE programa ENDIF
                     {:
-                         System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE");
+                         System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE programa ENDIF");
                     :}
-                    | IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE ELSE LLAVE_OPEN programa LLAVE_CLOSE 
+                    | IF PAREN_OPEN condicion PAREN_CLOSE programa ELSE programa ENDIF
                     {:
-                         System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE ELSE LLAVE_OPEN programa LLAVE_CLOSE");
+                         System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE programa ELSE programa ENDIF");
                     :};
 
 condicion           ::= comparacion OP_AND comparacion 
@@ -178,28 +189,39 @@ comparacion         ::= expresion OP_GT expresion
             WHILE
 */
 
-while               ::= WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE  
+while               ::= WHILE PAREN_OPEN condicion PAREN_CLOSE programa ENDWHILE
                     {:
-                         System.out.println("while -> WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE");
+                         System.out.println("while -> WHILE PAREN_OPEN condicion PAREN_CLOSE programa ENDWHILE");
                     :};
-
+/*
             display
 */
-display               ::= display IDENTIFICADOR
+display               ::= display expresion
                     {:
-                         System.out.println("display -> display IDENTIFICADOR");
+                         System.out.println("display -> display expresion");
                     :}
-                    | display CONSTANTE_STRING:CTE_STRING
-                    {:
-                         String str = CTE_STRING.replace("\"", "");
-                         System.out.println("display -> display CONSTANTE_STRING");
-                         tablaDeSimbolos.add("_"+str, null, str, str.length());
-                    :};
-
 /*
             get
 */
 get                ::= get IDENTIFICADOR
                     {:
                          System.out.println("get -> get IDENTIFICADOR");
+                    :};
+/*
+            for
+*/
+for                ::= FOR asignacion TO expresion programa NEXT identificador
+                    {:
+                         System.out.println("for -> for asignacion TO expresion programa NEXT identificador");
+                    :}
+					| FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA CORCHETE_CLOSE programa NEXT identificador
+                    {:
+                         System.out.println("for -> FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA CORCHETE_CLOSE programa NEXT identificador");
+                    :};
+/*
+            long
+*/
+long                ::= LONG PAREN_OPEN CORCHETE_OPEN identificadores CORCHETE_CLOSE PAREN_CLOSE
+                    {:
+                         System.out.println("long -> LONG PAREN_OPEN CORCHETE_OPEN identificadores CORCHETE_CLOSE PAREN_CLOSE");
                     :};
