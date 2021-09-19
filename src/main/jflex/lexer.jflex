@@ -34,10 +34,8 @@ DIGITO 	    =	[0-9]
 LETRA 	    =	[a-zA-Z]
 
 // Construcciones del lenguaje
-// -/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- /-
-COMMENT = "*/" ~"/*"
-NESTED_COMMENT = "*/" .* {COMMENT} ~ "/*"
-IDENTIFICADOR = {LETRA}[a-zA-Z0-9_]*({LETRA}|{DIGITO})*
+COMMENT = "*/"({DIGITO}|{LETRA}|{WhiteSpace})*"/*"
+IDENTIFICADOR = {LETRA}[a-zA-Z0-9]*
 
 // Constantes
 CONSTANTE_ENTERA =  {DIGITO}+
@@ -51,9 +49,15 @@ WHILE = "while"
 DIM = "DIM"
 DISPLAY = "DISPLAY"
 GET = "GET"
-INTEGER_TYPE = "INTEGER"
-FLOAT_TYPE = "FLOAT"
-STRING_TYPE = "STRING"
+INTEGER_TYPE = "integer"
+FLOAT_TYPE = "real"
+STRING_TYPE = "string"
+FOR = "FOR"
+NEXT = "NEXT"
+TO = "TO"
+LONG = "long"
+ENDIF = "ENDIF"
+ENDWHILE = "ENDWHILE"
 
 // Operadores lógicos y ariméticos
 OP_GT = ">" 
@@ -79,23 +83,26 @@ PAREN_OPEN = "("
 PAREN_CLOSE = ")"
 CORCHETE_OPEN = "["
 CORCHETE_CLOSE = "]"
-LLAVE_OPEN = "{"
-LLAVE_CLOSE = "}"
 
 %%
 <YYINITIAL> {
 
 // Keywords
-{IF}	                       { return symbol(Simbolos.IF); }
-{ELSE}	                 { return symbol(Simbolos.ELSE); }
-{WHILE}	                 { return symbol(Simbolos.WHILE); }
-{DIM}	                 { return symbol(Simbolos.DIM); }
+{IF}	                     { return symbol(Simbolos.IF); }
+{ELSE}	                 	 { return symbol(Simbolos.ELSE); }
+{WHILE}	                	 { return symbol(Simbolos.WHILE); }
+{DIM}	                 	 { return symbol(Simbolos.DIM); }
 {DISPLAY}	                 { return symbol(Simbolos.DISPLAY); }
-{GET}	                 { return symbol(Simbolos.GET); }
-{AS}	                 { return symbol(Simbolos.AS); }
-{INTEGER_TYPE}	           { return symbol(Simbolos.INTEGER_TYPE); }
-{FLOAT_TYPE}	           { return symbol(Simbolos.FLOAT_TYPE); }
-{STRING_TYPE}	           { return symbol(Simbolos.STRING_TYPE); }
+{GET}	               		 { return symbol(Simbolos.GET); }
+{INTEGER_TYPE}	             { return symbol(Simbolos.INTEGER_TYPE); }
+{FLOAT_TYPE}	             { return symbol(Simbolos.FLOAT_TYPE); }
+{STRING_TYPE}	             { return symbol(Simbolos.STRING_TYPE); }
+{FOR}						 { return symbol(Simbolos.FOR); }
+{NEXT}						 { return symbol(Simbolos.NEXT); }
+{TO}						 { return symbol(Simbolos.TO); }
+{LONG}						 { return symbol(Simbolos.LONG); }
+{ENDIF}						 { return symbol(Simbolos.ENDIF); }
+{ENDWHILE}					 { return symbol(Simbolos.ENDWHILE); }
 
 // Operadores
 
@@ -122,11 +129,8 @@ LLAVE_CLOSE = "}"
 {PAREN_CLOSE}                  { return symbol(Simbolos.PAREN_CLOSE); }
 {CORCHETE_OPEN}                { return symbol(Simbolos.CORCHETE_OPEN); }
 {CORCHETE_CLOSE}               { return symbol(Simbolos.CORCHETE_CLOSE); }
-{LLAVE_OPEN}                   { return symbol(Simbolos.LLAVE_OPEN); }
-{LLAVE_CLOSE}                  { return symbol(Simbolos.LLAVE_CLOSE); }
 
 
-{NESTED_COMMENT}	           { /* do nothing */ }
 {COMMENT}	                 { /* do nothing */ }
 {IDENTIFICADOR}	           { 
                                     String id = new String(yytext());
