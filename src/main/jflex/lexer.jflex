@@ -34,7 +34,7 @@ DIGITO 	    =	[0-9]
 LETRA 	    =	[a-zA-Z]
 
 // Construcciones del lenguaje
-COMMENT = "*/"({DIGITO}|{LETRA}|{WhiteSpace})*"/*"
+COMMENT = "*/" ~"/*"
 IDENTIFICADOR = {LETRA}[a-zA-Z0-9]*
 
 // Constantes

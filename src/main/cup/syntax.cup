@@ -104,7 +104,7 @@ tiposdedato          ::= tipodedato
                     {:
                          System.out.println("tiposdedato -> Tipo de dato simple ");
                     :}
-                    | tipodedato COMA tipodedato
+                    | tiposdedato COMA tipodedato
                     {:
                          System.out.println("tiposdedato -> Tipo de dato en lista ");
                     :};
@@ -126,7 +126,7 @@ identificadores     ::= IDENTIFICADOR:ID
                     {:
                          this.identifierList.add(ID);
                     :}
-                    | IDENTIFICADOR COMA IDENTIFICADOR:ID
+                    | identificadores COMA IDENTIFICADOR:ID
                     {:
                          this.identifierList.add(ID);
                     :};
