@@ -211,7 +211,7 @@ get                ::= get IDENTIFICADOR
 /*
             for
 */
-for                ::= FOR asignacion TO expresion programa NEXT identificador
+for                ::= FOR asignacion TO expresion programa NEXT IDENTIFICADOR
                     {:
                          System.out.println("for -> for asignacion TO expresion programa NEXT identificador");
                     :}
