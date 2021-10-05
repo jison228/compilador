@@ -18,3 +18,7 @@ Y saca los Analizadores en la carepta:
 
 ## DEVOPS
 Asi basicamente, cada vez que querramos probar como quedo el analizador, simplemente ejecutamos ese .bat y ya esta.
+
+## Para correr el exe
+Esta compilado con JRE 17, descargar de aca:
+https://www.oracle.com/java/technologies/downloads/#jdk17-windows
