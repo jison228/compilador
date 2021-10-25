@@ -11,4 +11,8 @@ public class Hoja implements Nodo {
 	public void Execute() {
 		return;
 	}
+	
+	public String getString(String pre) {
+		return pre + val +"\n";
+	}
 }
