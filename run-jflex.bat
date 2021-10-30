@@ -5,7 +5,12 @@ SET LEXER=".\src\main\jflex\lexer.jflex"
 SET SINTAXIS=".\src\main\cup\syntax.cup"
 
 SET ANALIZADORES_OUT=".\src\main\java\Analizadores"
-
+cd /d %ANALIZADORES_OUT%
+for /F "delims=" %%i in ('dir /b') do (rmdir "%%i" /s/q || del "%%i" /s/q)
+cd ..
+cd ..
+cd ..
+cd ..
 java -jar %JFLEX_JAR% -d %ANALIZADORES_OUT% %LEXER% 
 pause
 
