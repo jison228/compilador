@@ -79,7 +79,7 @@ NEXT a
  
 
 */ long /*
-long ([a,b,c,e])
+a := long ([a,b,c,e])
 
  
 
@@ -94,7 +94,7 @@ GET b
  
 
 */ Descomentar para chequeo de cota enteros /*
-*/a := 65536 /*
+a := 65.536 
 
  
 

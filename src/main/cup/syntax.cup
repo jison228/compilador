@@ -16,29 +16,29 @@ action code
      public Stack<Nodo> punteroTermino = new Stack<Nodo>();
      public Stack<Nodo> punteroExpresion = new Stack<Nodo>();
      
-     public NodoIntermedio punteroInicio = ;
+     public NodoIntermedio punteroInicio = null;
      public Stack<Nodo> punteroPrograma = new Stack<Nodo>();
-     public Nodo punteroSentencia = ;
-     public Nodo punteroDeclaracion = ;
-     public Nodo punteroTiposDeDatos = ;
-     public Nodo punteroTipoDeDato = ;
-     public Nodo punteroIdentificadores = ;
-     public Nodo punteroAsignacion = ;
-     public Nodo punteroIf = ;
-     public Nodo punteroCondicion = ;
-     public Nodo punteroComparacion = ;
-     public Nodo punteroWhile = ;
-     public Nodo punteroDisplay = ;
-     public Nodo punteroGet = ;
-     public Nodo punteroFor = ;
-     public Nodo punteroLong = ;
+     public Nodo punteroSentencia = null;
+     public Nodo punteroDeclaracion = null;
+     public Nodo punteroTiposDeDatos = null;
+     public Nodo punteroTipoDeDato = null;
+     public Nodo punteroIdentificadores = null;
+     public Nodo punteroAsignacion = null;
+     public Nodo punteroIf = null;
+     public Nodo punteroCondicion = null;
+     public Nodo punteroComparacion = null;
+     public Nodo punteroWhile = null;
+     public Nodo punteroDisplay = null;
+     public Nodo punteroGet = null;
+     public Nodo punteroFor = null;
+     public Nodo punteroLong = null;
      
-     public Nodo auxElse = ;     
-     public Nodo auxComparacion = ; // renombrar condicion
-     public Nodo auxComparacion2 = ;
-     public Nodo auxTo = ;
-     public Nodo auxBy = ;
-     public Nodo auxFor = ;
+     public Nodo auxElse = null;     
+     public Nodo auxComparacion = null; // renombrar condicion
+     public Nodo auxComparacion2 = null;
+     public Nodo auxTo = null;
+     public Nodo auxBy = null;
+     public Nodo auxFor = null;
      
      public int IdsCount = 0;
 :}
@@ -48,12 +48,12 @@ parser code
 {:
     public void syntax_error(Symbol cur_token) {
         String errMsg = "Syntax error -> " + cur_token.value.toString() + " <- " + cur_token.left + ":" +  cur_token.right + "\n";
-        report_error(errMsg, );
+        report_error(errMsg, null);
     }
 
     public void unrecovered_syntax_error(Symbol cur_token) throws Exception {
         String errMsg = "Couldn't repair and continue parse ->" + cur_token.value.toString() + "<- " + cur_token.left + ":" +  cur_token.right + "\n";
-        report_fatal_error(errMsg, );
+        report_fatal_error(errMsg, null);
     }
 :}
 
@@ -132,11 +132,6 @@ sentencia           ::= declaracion
                     {:
 	                     punteroSentencia = punteroFor;
                          System.out.println("sentencia -> for");
-                    :}
-                    | long 
-                    {:
-	                     punteroSentencia = punteroLong;
-                         System.out.println("sentencia -> long");
                     :};
 
 /*
@@ -224,20 +219,20 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     {:
 	                     punteroFactor.push(new Hoja(CTE_ENT));
                          System.out.println("se apunto punteroFactor a: " + CTE_ENT);
-                         tablaDeSimbolos.add("_"+CTE_ENT, , CTE_ENT, );
+                         tablaDeSimbolos.add("_"+CTE_ENT, null, CTE_ENT, null);
                     :}
                     | CONSTANTE_FLOAT:CTE_FLOAT
                     {:
 	                     punteroFactor.push(new Hoja(CTE_FLOAT));
                          System.out.println("se apunto punteroFactor a: " + CTE_FLOAT);
-                         tablaDeSimbolos.add("_"+CTE_FLOAT, , CTE_FLOAT, );                         
+                         tablaDeSimbolos.add("_"+CTE_FLOAT, null, CTE_FLOAT, null);                         
                     :} 
                     | CONSTANTE_STRING:CTE_STRING
                     {:
 	                     punteroFactor.push( new Hoja(CTE_STRING));
                          System.out.println("se apunto punteroFactor a: " + CTE_STRING);
                          String str = CTE_STRING.replace("\"", "");
-                         tablaDeSimbolos.add("_"+str, , str, str.length());
+                         tablaDeSimbolos.add("_"+str, null, str, str.length());
                     :}
                     | PAREN_OPEN expresion PAREN_CLOSE 
                     {:
@@ -248,6 +243,11 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     {:
 	                     punteroFactor.push( new Hoja(ID));
                          System.out.println("se apunto punteroFactor a: " + ID);
+                    :}
+                    | long 
+                    {:
+	                     punteroFactor.push( punteroLong);
+                         System.out.println("factor -> long");
                     :};
 
 /*
@@ -276,7 +276,7 @@ condicion           ::= comparacion {: auxComparacion = punteroComparacion; RESU
                     :}
                     | OP_NOT PAREN_OPEN comparacion PAREN_CLOSE
                     {:
-                    	punteroCondicion = new NodoIntermedio("OP_NOT", new Hoja(""), punteroComparacion);
+                    	punteroCondicion = new NodoIntermedio("OP_NOT", new Hoja("NULL"), punteroComparacion);
                     :}
                     | comparacion
                     {:
@@ -322,7 +322,7 @@ while               ::= WHILE PAREN_OPEN condicion PAREN_CLOSE programa ENDWHILE
 */
 display             ::= DISPLAY expresion
                     {:
-                    	punteroDisplay = new NodoIntermedio("DISPLAY", new Hoja(""), punteroExpresion.pop());
+                    	punteroDisplay = new NodoIntermedio("DISPLAY", new Hoja("NULL"), punteroExpresion.pop());
                          System.out.println("display -> display expresion");
                     :};
 /*
