@@ -3,52 +3,41 @@ DIM [ a, b, d, f ] AS [ integer, integer, real ,string]
 DIM [ c, e ] AS [ integer, real]
 DIM [ nousada ] AS [ string]
 
- 
-
 */ Asignacion de expresiones /*
-a := 99 + 2*10
-b := 123 * 234 * 77 - 34
-
- 
+a := 99 + (2)*10
+b := 123 * (234 * 77) - 34
 
 */ If con else /*
 if (a == b)
     a := b
+    while (a == b && b != 0) 
+        a := b
+    ENDWHILE
 else 
     b := a
 ENDIF
-
- 
 
 */ If simple /*
 if (a >= b)
     a := 10
 ENDIF
 
- 
-
-*/ If con else con not/*
-if (!(a >= b))
+*/ If con else sin while/*
+if (a >= b)
     a := 10
 else
-    a := 2
+	a := 2
 ENDIF
-
- 
 
 */ While /*
 while (a > 2)
     b := 0
 ENDWHILE
 
- 
-
 */ While con condicion not /*
 while (!(a == b))
     b := 0
 ENDWHILE
-
- 
 
 */ Ciclo anindado /*
 while (!(a == b))
@@ -59,53 +48,39 @@ while (!(a == b))
     ENDWHILE
 ENDWHILE
 
- 
-
 */ For sin step /*
 FOR a := 2 TO 7
-    b := 0
+	b := 0
 NEXT a
-
- 
 
 */ For con step /*
 FOR a := 2 TO 7 [2]
-    b := 0
+	b := 0
 NEXT a
 
- 
-
 */ long /*
-a := long ([a,b,c,e])
-
- 
+long ([a,b,c,e])
 
 */ Display /*
 DISPLAY "30 caracteres es muy poco"
 
- 
-
 */ Get /*
 GET b
 
- 
-
 */ Descomentar para chequeo de cota enteros /*
-a := 65.536 
-
- 
+*/a := 65536 /*
 
 
 */ Descomentar para chequeo de cota reales/*
 */a := 4294967296.123 /*
 
- 
-
 
 */ Descomentar para chequeo de cota strings /*
 */a := "0123456789012345678901234567891" /*
 
- 
-
 */ Descomentar para chequeo de cota de identificadores /*
 */DIM [ iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii ] AS [ string] /*
+
+
+
+
