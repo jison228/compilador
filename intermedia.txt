@@ -34,29 +34,13 @@ SIG
                                                 77
                                              34
                                     IF
-                                       OP_AND
-                                          OP_EQ
+                                       OP_EQ
+                                          a
+                                          b
+                                       True/False
+                                          OP_ASIG
                                              a
                                              b
-                                          OP_NE
-                                             b
-                                             0
-                                       ELSE
-                                          SIG
-                                             OP_ASIG
-                                                a
-                                                b
-                                             WHILE
-                                                OP_AND
-                                                   OP_EQ
-                                                      a
-                                                      b
-                                                   OP_NE
-                                                      b
-                                                      0
-                                                OP_ASIG
-                                                   a
-                                                   b
                                           OP_ASIG
                                              b
                                              a
@@ -68,10 +52,12 @@ SIG
                                        a
                                        10
                               IF
-                                 OP_GTE
-                                    a
-                                    b
-                                 ELSE
+                                 OP_NOT
+                                    NULL
+                                    OP_GTE
+                                       a
+                                       b
+                                 True/False
                                     OP_ASIG
                                        a
                                        10
@@ -139,13 +125,13 @@ SIG
                a
                4
          DISPLAY
-            NULL
+            NOP
             "30 caracteres es muy poco"
       GET
-         NULL
+         NOP
          b
    OP_ASIG
       a
       65.536
 
-Sun Oct 31 03:12:24 ART 2021
+Sun Oct 31 17:08:34 ART 2021

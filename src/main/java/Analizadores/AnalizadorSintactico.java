@@ -867,7 +867,7 @@ class CUP$AnalizadorSintactico$actions {
                 RESULT = (Symbol) ((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-3)).value;
 		
                     	punteroIf = new NodoIntermedio("IF", punteroCondicion, 
-                    	  new NodoIntermedio("ELSE", auxElse, punteroPrograma.pop())
+                    	  new NodoIntermedio("True/False", auxElse, punteroPrograma.pop())
                     	);
                          System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE programa ELSE programa ENDIF");
                     
@@ -1090,7 +1090,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                    	punteroDisplay = new NodoIntermedio("DISPLAY", new Hoja("NULL"), punteroExpresion.pop());
+                    	punteroDisplay = new NodoIntermedio("DISPLAY", new Hoja("NOP"), punteroExpresion.pop());
                          System.out.println("display -> display expresion");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("display",15, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -1105,7 +1105,7 @@ class CUP$AnalizadorSintactico$actions {
 		int IDright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String ID = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-                    	punteroGet = new NodoIntermedio("GET", new Hoja("NULL"), new Hoja(ID));
+                    	punteroGet = new NodoIntermedio("GET", new Hoja("NOP"), new Hoja(ID));
                          System.out.println("get -> get IDENTIFICADOR");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("get",16, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);

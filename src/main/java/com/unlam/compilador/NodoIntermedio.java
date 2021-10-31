@@ -30,7 +30,7 @@ public class NodoIntermedio implements Nodo {
 	public void save() {
 	    Logger LOGGER = Logger.getLogger(SymbolTable.class.getName());
 	    
-        try (BufferedWriter br = new BufferedWriter(new FileWriter("intermedio.txt"))) {
+        try (BufferedWriter br = new BufferedWriter(new FileWriter("intermedia.txt"))) {
 
         	br.write(this.getString(""));
         	
