@@ -189,6 +189,8 @@ asignacion          ::= IDENTIFICADOR:ID OP_ASIG expresion
 expresion           ::= expresion OP_PLUS termino 
                     {:
                     	punteroExpresion = new NodoIntermedio("OP_PLUS", punteroExpresion, punteroTermino);
+                    	System.out.println("se apunto punteroExpresion a: " + punteroExpresion.getVal()+" , "+punteroTermino.getVal());                    	
+                    	
                     :}
                     | expresion OP_MINUS termino 
                     {:
@@ -197,6 +199,7 @@ expresion           ::= expresion OP_PLUS termino
                     | termino
                     {:
                     	punteroExpresion = punteroTermino;
+                    	System.out.println("se apunto punteroExpresion a: " + punteroTermino.getVal());
                     :};
 
 termino             ::= termino OP_MULTI factor

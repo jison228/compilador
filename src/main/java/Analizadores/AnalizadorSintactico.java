@@ -682,6 +682,8 @@ class CUP$AnalizadorSintactico$actions {
               Symbol RESULT =null;
 		
                     	punteroExpresion = new NodoIntermedio("OP_PLUS", punteroExpresion, punteroTermino);
+                    	System.out.println("se apunto punteroExpresion a: " + punteroExpresion.getVal()+" , "+punteroTermino.getVal());                    	
+                    	
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("expresion",8, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -704,6 +706,7 @@ class CUP$AnalizadorSintactico$actions {
               Symbol RESULT =null;
 		
                     	punteroExpresion = punteroTermino;
+                    	System.out.println("se apunto punteroExpresion a: " + punteroTermino.getVal());
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("expresion",8, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }

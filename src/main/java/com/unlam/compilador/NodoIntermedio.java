@@ -19,6 +19,10 @@ public class NodoIntermedio implements Nodo {
 		this.der = der;
 	}
 	
+	public String getVal() {
+		return this.val;
+	}
+	
 	public void Execute() {
 		return;
 	}
