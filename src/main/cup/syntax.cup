@@ -12,6 +12,7 @@ action code
 {:
      public SymbolTable tablaDeSimbolos = new SymbolTable();
      public ArrayList<String> identifierList = new ArrayList();
+     public ArrayList<String> typesList = new ArrayList();
      public Stack<Nodo> punteroFactor = new Stack<Nodo>();
      public Stack<Nodo> punteroTermino = new Stack<Nodo>();
      public Stack<Nodo> punteroExpresion = new Stack<Nodo>();
@@ -75,13 +76,14 @@ terminal String IDENTIFICADOR;
 
 // Declaracion de no terminales
 non terminal Symbol inicio, programa, declaracion, tiposdedato ,tipodedato, identificadores, sentencia, asignacion, expresion, termino, factor, 
-                    condicion, comparacion, if, while, display, get, for, long;
+                    condicion, comparacion, if, while, display, get, for, long, identificadoresLong;
 
 start with inicio;
 
 //Reglas gramaticales
 inicio         	::= programa
                     {:
+                    	 tablaDeSimbolos.addIdentifiers(this.identifierList, this.typesList);  
                     	 punteroInicio = (NodoIntermedio)punteroPrograma.pop();
                          tablaDeSimbolos.save();
                          punteroInicio.save();
@@ -156,25 +158,26 @@ tiposdedato         ::= tipodedato
                     
 tipodedato          ::= INTEGER_TYPE
                     {:
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
+                         //tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
+                         this.typesList.add("INTEGER");
                     :}
                     | FLOAT_TYPE
                     {:
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "FLOAT");                       
+                         //tablaDeSimbolos.addIdentifiers(this.identifierList, "FLOAT");  
+                         this.typesList.add("REAL");                     
                     :}
                     | STRING_TYPE
                     {:
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "STRING");                         
+                         //tablaDeSimbolos.addIdentifiers(this.identifierList, "STRING");  
+                         this.typesList.add("STRING");                       
                     :};
 
 identificadores     ::= IDENTIFICADOR:ID
                     {:
-                    	IdsCount = 1;
                          this.identifierList.add(ID);
                     :}
                     | identificadores COMA IDENTIFICADOR:ID
                     {:
-                    	IdsCount++;
                          this.identifierList.add(ID);
                     :};
 /*
@@ -261,7 +264,7 @@ if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE programa ENDIF
                     | IF PAREN_OPEN condicion PAREN_CLOSE programa {: auxElse = punteroPrograma.pop(); RESULT= new Symbol(-1); :} ELSE programa ENDIF
                     {:
                     	punteroIf = new NodoIntermedio("IF", punteroCondicion, 
-                    	  new NodoIntermedio("ELSE", auxElse, punteroPrograma.pop())
+                    	  new NodoIntermedio("True/False", auxElse, punteroPrograma.pop())
                     	);
                          System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE programa ELSE programa ENDIF");
                     :};
@@ -352,8 +355,17 @@ for                ::= FOR asignacion TO expresion {: auxFor = punteroAsignacion
 /*
             long
 */
-long                ::= LONG PAREN_OPEN CORCHETE_OPEN identificadores CORCHETE_CLOSE PAREN_CLOSE
+long                ::= LONG PAREN_OPEN CORCHETE_OPEN identificadoresLong CORCHETE_CLOSE PAREN_CLOSE
                     {:
                     	punteroLong = new Hoja(Integer.toString(IdsCount));
-                         System.out.println("long -> LONG PAREN_OPEN CORCHETE_OPEN identificadores CORCHETE_CLOSE PAREN_CLOSE");
+                         System.out.println("long -> LONG PAREN_OPEN CORCHETE_OPEN identificadoresLong CORCHETE_CLOSE PAREN_CLOSE");
+                    :};
+                    
+identificadoresLong     ::= IDENTIFICADOR:ID
+                    {:
+                    	IdsCount = 1;
+                    :}
+                    | identificadoresLong COMA IDENTIFICADOR:ID
+                    {:
+                    	IdsCount++;
                     :};

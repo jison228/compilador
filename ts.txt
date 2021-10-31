@@ -1,11 +1,4 @@
 NOMBRE                        |TIPODATO                      |VALOR                         |LONGITUD                      
-a                             |INTEGER                       |-                             |-                             
-b                             |INTEGER                       |-                             |-                             
-d                             |INTEGER                       |-                             |-                             
-f                             |INTEGER                       |-                             |-                             
-c                             |INTEGER                       |-                             |-                             
-e                             |INTEGER                       |-                             |-                             
-nousada                       |STRING                        |-                             |-                             
 _99                           |-                             |99                            |-                             
 _2                            |-                             |2                             |-                             
 _10                           |-                             |10                            |-                             
@@ -17,3 +10,10 @@ _0                            |-                             |0                 
 _7                            |-                             |7                             |-                             
 _30 caracteres es muy poco    |-                             |30 caracteres es muy poco     |25                            
 _65.536                       |-                             |65.536                        |-                             
+a                             |INTEGER                       |-                             |-                             
+b                             |INTEGER                       |-                             |-                             
+d                             |REAL                          |-                             |-                             
+f                             |STRING                        |-                             |-                             
+c                             |INTEGER                       |-                             |-                             
+e                             |REAL                          |-                             |-                             
+nousada                       |STRING                        |-                             |-                             

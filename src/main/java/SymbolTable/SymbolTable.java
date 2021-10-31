@@ -55,6 +55,26 @@ public class SymbolTable {
     	   i.remove();
     	}    	
     }
+    
+
+    public void addIdentifiers(ArrayList<String> identifiers, ArrayList<String> dataType) {
+    	Iterator<String> i = identifiers.iterator();
+    	Iterator<String> d = dataType.iterator();
+    	while (i.hasNext()) {
+           // must be called before you can call i.remove()
+    	   String id = i.next(); 
+           if (!(isInTable(id)))
+           {
+    	        this.add(id, d.next(), "-", null);
+           }
+           else {
+               throw new Error("Error de sintaxis: la variable '"+id+"' ya habia sido declarada."); 
+           }
+           // Remove identifier from list
+    	   i.remove();
+    	   d.remove();
+    	}    	
+    }
 
     public Boolean isInTable(String nombre) {
         return symbolList.stream().anyMatch(simbolo -> simbolo.getNombre().equals(nombre));
