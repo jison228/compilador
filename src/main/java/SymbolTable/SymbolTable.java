@@ -15,9 +15,11 @@ public class SymbolTable {
     public static Logger LOGGER = Logger.getLogger(SymbolTable.class.getName());
 
     private List<Simbolo> symbolList;
+    private int constStringNumber;
 
     public SymbolTable() {
         this.symbolList = new LinkedList<Simbolo>();
+        this.constStringNumber = 0;
     }
 
     // Getters & Setters
@@ -27,19 +29,28 @@ public class SymbolTable {
 
     // Public methods
 
-    public void add(String nombre, String tipo, String valor, Integer longitud) {
+    public void add(String nombre, DataTypes tipo, String valor, Integer longitud) {
         if(!isInTable(nombre)){
             symbolList.add(new Simbolo(nombre, tipo, valor, longitud));
         }
     }
 
-    // Es decir, cada vez que vas encontrando identificadores, los guard√°s en una cola/lista. Cuando encontr√°s un tipo, vac√≠as esa lista, y le agreg√°s 
+    public String addStringConstant(DataTypes tipo, String valor, Integer longitud) {
+        String nombre = "_constString"+constStringNumber;
+        constStringNumber++;
+        if(!isInTable(nombre)){
+            symbolList.add(new Simbolo(nombre, tipo, valor, longitud));
+        }
+        return nombre;
+    }
+
+    // Es decir, cada vez que vas encontrando identificadores, los guard·s en una cola/lista. Cuando encontr·s un tipo, vacÌas esa lista, y le agreg·s 
     // a esos identificadores el tipo encontrado. 
     // Esto es porque nuestro lenguaje permite declaraciones de este tipo:
     // a, b, c : FLOAT;
-    // Si hay un identificador en la cola y nunca se le asign√≥ su tipo, bueno, hay un problema. De todas formas no deber√≠a pasar, porque la regla sint√°ctica
-    // deber√≠a exigir que las declaraciones sean "ID: TIPO"
-    public void addIdentifiers(ArrayList<String> identifiers, String dataType) {
+    // Si hay un identificador en la cola y nunca se le asignÛ su tipo, bueno, hay un problema. De todas formas no deberÌa pasar, porque la regla sint·ctica
+    // deberÌa exigir que las declaraciones sean "ID: TIPO"
+    public void addIdentifiers(ArrayList<String> identifiers, DataTypes dataType) {
     	Iterator<String> i = identifiers.iterator();
     	while (i.hasNext()) {
            // must be called before you can call i.remove()
@@ -58,6 +69,27 @@ public class SymbolTable {
 
     public Boolean isInTable(String nombre) {
         return symbolList.stream().anyMatch(simbolo -> simbolo.getNombre().equals(nombre));
+    }
+    
+    public boolean isString(String variable)
+    {
+    	if (variable.startsWith("_constString"))
+    		return true;
+    	
+    	for (Simbolo simbolo : symbolList) {
+			if (simbolo.getNombre().equals(variable) && simbolo.getTipo() != null && simbolo.getTipo().equals(DataTypes.STRING))
+				return true;
+		}
+    	
+    	return false;
+    }
+
+    public DataTypes getType(String variable) {
+        for (Simbolo simbolo : symbolList) {
+			if (simbolo.getNombre().equals(variable))
+				return simbolo.getTipo();
+		}
+        return null;
     }
 
     public void save() {

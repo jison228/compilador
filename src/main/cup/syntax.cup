@@ -4,7 +4,9 @@ import SymbolTable.*;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Queue;
-import com.unlam.compilador.*;
+import com.unlam.compilador.Nodo;
+import com.unlam.compilador.Hoja;
+import com.unlam.compilador.NodoIntermedio;
 
 // Codigo que se le agrega a las acciones gramaticales
 action code
@@ -90,8 +92,8 @@ programa      		::= programa sentencia
                     | sentencia
                     {:
 	                     punteroPrograma = punteroSentencia;
-                         System.out.println("se apunto punteroFactor a: " + CTE_ENT);
-                         tablaDeSimbolos.add("_"+CTE_ENT, null, CTE_ENT, null);
+                         //System.out.println("se apunto punteroFactor a: " + CTE_ENT);
+                         //tablaDeSimbolos.add("_"+CTE_ENT, null, CTE_ENT, null);
                     :};
 
 sentencia           ::= declaracion
@@ -155,15 +157,15 @@ tiposdedato         ::= tipodedato
                     
 tipodedato          ::= INTEGER_TYPE
                     {:
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, DataTypes.INTEGER);
                     :}
                     | FLOAT_TYPE
                     {:
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "FLOAT");                       
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, DataTypes.FLOAT);                       
                     :}
                     | STRING_TYPE
                     {:
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "STRING");                         
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, DataTypes.STRING);                         
                     :};
 
 identificadores     ::= IDENTIFICADOR:ID
@@ -244,58 +246,27 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
 */
 if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE programa ENDIF
                     {:
-                    	punteroIf = new NodoIntermedio("IF", punteroCondicion, punteroPrograma);
+                         punteroIf = new NodoIntermedio("IF", punteroCondicion, punteroPrograma);
                          System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE programa ENDIF");
                     :}
-                    | IF PAREN_OPEN condicion PAREN_CLOSE programa {: auxElse = punteroPrograma; :} ELSE programa ENDIF
+                    | IF PAREN_OPEN condicion PAREN_CLOSE programa ELSE programa ENDIF
                     {:
-                    	punteroIf = new NodoIntermedio("IF", punteroCondicion, 
-                    	  new NodoIntermedio("ELSE", auxElse, punteroPrograma)
-                    	);
                          System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE programa ELSE programa ENDIF");
+                         
+						// punteroIf = new NodoIntermedio("IF", punteroCondicion, new NodoIntermedio("ELSE", auxElse, punteroPrograma));
                     :};
 
-condicion           ::= comparacion {: auxComparacion = punteroComparacion :} OP_AND comparacion 
-                    {:
-                    	punteroCondicion = new NodoIntermedio("OP_AND", auxComparacion, punteroComparacion);
-                    :}
-                    | comparacion {: auxComparacion = punteroComparacion :} OP_OR comparacion
-                    {:
-                    	punteroCondicion = new NodoIntermedio("OP_OR", auxComparacion, punteroComparacion);
-                    :}
+condicion           ::= comparacion OP_AND comparacion 
+                    | comparacion OP_OR comparacion
                     | OP_NOT PAREN_OPEN comparacion PAREN_CLOSE
-                    {:
-                    	punteroCondicion = new NodoIntermedio("OP_NOT", new Hoja("NULL"), punteroComparacion);
-                    :}
-                    | comparacion
-                    {:
-                    	punteroCondicion = punteroComparacion;
-                    :};
+                    | comparacion;
 
-comparacion         ::= expresion OP_GT {: auxComparacion2 = punteroExpresion :} expresion 
-                    {:
-                    	punteroComparacion = new NodoIntermedio("OP_GT", auxComparacion2, punteroExpresion);
-                    :}
-                    | expresion OP_LT{: auxComparacion2 = punteroExpresion :} expresion
-                    {:
-                    	punteroComparacion = new NodoIntermedio("OP_LT", auxComparacion2, punteroExpresion);
-                    :}
-                    | expresion OP_GTE{: auxComparacion2 = punteroExpresion :} expresion 
-                    {:
-                    	punteroComparacion = new NodoIntermedio("OP_GTE", auxComparacion2, punteroExpresion);
-                    :}
-                    | expresion OP_LTE{: auxComparacion2 = punteroExpresion :} expresion
-                    {:
-                    	punteroComparacion = new NodoIntermedio("OP_LTE", auxComparacion2, punteroExpresion);
-                    :}
-                    | expresion OP_EQ{: auxComparacion2 = punteroExpresion :} expresion
-                    {:
-                    	punteroComparacion = new NodoIntermedio("OP_EQ", auxComparacion2, punteroExpresion);
-                    :}
-                    | expresion OP_NE{: auxComparacion2 = punteroExpresion :} expresion
-                    {:
-                    	punteroComparacion = new NodoIntermedio("OP_NE", auxComparacion2, punteroExpresion);
-                    :};
+comparacion         ::= expresion OP_GT expresion 
+                    | expresion OP_LT expresion
+                    | expresion OP_GTE expresion 
+                    | expresion OP_LTE expresion
+                    | expresion OP_EQ expresion
+                    | expresion OP_NE expresion;
 
 /*
             WHILE
