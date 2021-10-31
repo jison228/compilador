@@ -13,3 +13,6 @@ _123                          |-                             |123               
 _234                          |-                             |234                           |-                             
 _77                           |-                             |77                            |-                             
 _34                           |-                             |34                            |-                             
+_0                            |-                             |0                             |-                             
+_7                            |-                             |7                             |-                             
+_30 caracteres es muy poco    |-                             |30 caracteres es muy poco     |25                            

@@ -12,32 +12,33 @@ action code
 {:
      public SymbolTable tablaDeSimbolos = new SymbolTable();
      public ArrayList<String> identifierList = new ArrayList();
-     public Nodo punteroFactor = null;
-     public Nodo punteroTermino = null;
-     public Nodo punteroExpresion = null;
+     public Stack<Nodo> punteroFactor = new Stack<Nodo>();
+     public Stack<Nodo> punteroTermino = new Stack<Nodo>();
+     public Stack<Nodo> punteroExpresion = new Stack<Nodo>();
      
-     public NodoIntermedio punteroInicio = null;
+     public NodoIntermedio punteroInicio = ;
      public Stack<Nodo> punteroPrograma = new Stack<Nodo>();
-     public Nodo punteroSentencia = null;
-     public Nodo punteroDeclaracion = null;
-     public Nodo punteroTiposDeDatos = null;
-     public Nodo punteroTipoDeDato = null;
-     public Nodo punteroIdentificadores = null;
-     public Nodo punteroAsignacion = null;
-     public Nodo punteroIf = null;
-     public Nodo punteroCondicion = null;
-     public Nodo punteroComparacion = null;
-     public Nodo punteroWhile = null;
-     public Nodo punteroDisplay = null;
-     public Nodo punteroGet = null;
-     public Nodo punteroFor = null;
-     public Nodo punteroLong = null;
+     public Nodo punteroSentencia = ;
+     public Nodo punteroDeclaracion = ;
+     public Nodo punteroTiposDeDatos = ;
+     public Nodo punteroTipoDeDato = ;
+     public Nodo punteroIdentificadores = ;
+     public Nodo punteroAsignacion = ;
+     public Nodo punteroIf = ;
+     public Nodo punteroCondicion = ;
+     public Nodo punteroComparacion = ;
+     public Nodo punteroWhile = ;
+     public Nodo punteroDisplay = ;
+     public Nodo punteroGet = ;
+     public Nodo punteroFor = ;
+     public Nodo punteroLong = ;
      
-     public Nodo auxElse = null;     
-     public Nodo auxComparacion = null; // renombrar condicion
-     public Nodo auxComparacion2 = null;
-     public Nodo auxTo = null;
-     public Nodo auxBy = null;
+     public Nodo auxElse = ;     
+     public Nodo auxComparacion = ; // renombrar condicion
+     public Nodo auxComparacion2 = ;
+     public Nodo auxTo = ;
+     public Nodo auxBy = ;
+     public Nodo auxFor = ;
      
      public int IdsCount = 0;
 :}
@@ -47,12 +48,12 @@ parser code
 {:
     public void syntax_error(Symbol cur_token) {
         String errMsg = "Syntax error -> " + cur_token.value.toString() + " <- " + cur_token.left + ":" +  cur_token.right + "\n";
-        report_error(errMsg, null);
+        report_error(errMsg, );
     }
 
     public void unrecovered_syntax_error(Symbol cur_token) throws Exception {
         String errMsg = "Couldn't repair and continue parse ->" + cur_token.value.toString() + "<- " + cur_token.left + ":" +  cur_token.right + "\n";
-        report_fatal_error(errMsg, null);
+        report_fatal_error(errMsg, );
     }
 :}
 
@@ -186,66 +187,66 @@ identificadores     ::= IDENTIFICADOR:ID
 */
 asignacion          ::= IDENTIFICADOR:ID OP_ASIG expresion
                     {:
-                    	punteroAsignacion = new NodoIntermedio("OP_ASIG", new Hoja(ID), punteroExpresion);
+                    	punteroAsignacion = new NodoIntermedio("OP_ASIG", new Hoja(ID), punteroExpresion.pop());
                          System.out.println("asignacion -> IDENTIFICADOR OP_ASIG expresion");
                     :};
 
 expresion           ::= expresion OP_PLUS termino 
                     {:
-                    	punteroExpresion = new NodoIntermedio("OP_PLUS", punteroExpresion, punteroTermino);
-                    	System.out.println("se apunto punteroExpresion a: " + punteroExpresion.getVal()+" , "+punteroTermino.getVal());                    	
+                    	punteroExpresion.push(new NodoIntermedio("OP_PLUS", punteroExpresion.pop(), punteroTermino.pop()));
+                    	System.out.println("se apunto punteroExpresion a: ");                    	
                     	
                     :}
                     | expresion OP_MINUS termino 
                     {:
-                    	punteroExpresion = new NodoIntermedio("OP_MINUS", punteroExpresion, punteroTermino);
+                    	punteroExpresion.push( new NodoIntermedio("OP_MINUS", punteroExpresion.pop(), punteroTermino.pop()));
                     :}
                     | termino
                     {:
-                    	punteroExpresion = punteroTermino;
-                    	System.out.println("se apunto punteroExpresion a: " + punteroTermino.getVal());
+                    	punteroExpresion.push( punteroTermino.pop());
+                    	System.out.println("se apunto punteroExpresion a: " );
                     :};
 
 termino             ::= termino OP_MULTI factor
                     {:
-                    	punteroTermino = new NodoIntermedio("OP_MULTI", punteroTermino, punteroFactor);
+                    	punteroTermino.push( new NodoIntermedio("OP_MULTI", punteroTermino.pop(), punteroFactor.pop()));
                     :}
                     | termino OP_DIVISION factor
                     {:
-                    	punteroTermino = new NodoIntermedio("OP_DIVISION", punteroTermino, punteroFactor);
+                    	punteroTermino.push( new NodoIntermedio("OP_DIVISION", punteroTermino.pop(), punteroFactor.pop()));
                     :}
                     | factor
                     {:
-                    	punteroTermino = punteroFactor;
+                    	punteroTermino.push( punteroFactor.pop());
                     :};
 
 factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     {:
-	                     punteroFactor = new Hoja(CTE_ENT);
+	                     punteroFactor.push(new Hoja(CTE_ENT));
                          System.out.println("se apunto punteroFactor a: " + CTE_ENT);
-                         tablaDeSimbolos.add("_"+CTE_ENT, null, CTE_ENT, null);
+                         tablaDeSimbolos.add("_"+CTE_ENT, , CTE_ENT, );
                     :}
                     | CONSTANTE_FLOAT:CTE_FLOAT
                     {:
-	                     punteroFactor = new Hoja(CTE_FLOAT);
+	                     punteroFactor.push(new Hoja(CTE_FLOAT));
                          System.out.println("se apunto punteroFactor a: " + CTE_FLOAT);
-                         tablaDeSimbolos.add("_"+CTE_FLOAT, null, CTE_FLOAT, null);                         
+                         tablaDeSimbolos.add("_"+CTE_FLOAT, , CTE_FLOAT, );                         
                     :} 
                     | CONSTANTE_STRING:CTE_STRING
                     {:
-	                     punteroFactor = new Hoja(CTE_STRING);
+	                     punteroFactor.push( new Hoja(CTE_STRING));
                          System.out.println("se apunto punteroFactor a: " + CTE_STRING);
                          String str = CTE_STRING.replace("\"", "");
-                         tablaDeSimbolos.add("_"+str, null, str, str.length());
+                         tablaDeSimbolos.add("_"+str, , str, str.length());
                     :}
                     | PAREN_OPEN expresion PAREN_CLOSE 
                     {:
-	                     punteroFactor = punteroExpresion;
-                         System.out.println("se apunto punteroFactor a: " + punteroExpresion.getVal() + "entre parentecis");
+	                     punteroFactor.push(punteroExpresion.pop());
+                         System.out.println("se apunto punteroFactor a: " );
                     :}
                     | IDENTIFICADOR:ID
                     {:
-	                     punteroFactor = new Hoja(ID);
+	                     punteroFactor.push( new Hoja(ID));
                          System.out.println("se apunto punteroFactor a: " + ID);
                     :};
 
@@ -275,36 +276,36 @@ condicion           ::= comparacion {: auxComparacion = punteroComparacion; RESU
                     :}
                     | OP_NOT PAREN_OPEN comparacion PAREN_CLOSE
                     {:
-                    	punteroCondicion = new NodoIntermedio("OP_NOT", new Hoja("NULL"), punteroComparacion);
+                    	punteroCondicion = new NodoIntermedio("OP_NOT", new Hoja(""), punteroComparacion);
                     :}
                     | comparacion
                     {:
                     	punteroCondicion = punteroComparacion;
                     :};
 
-comparacion         ::= expresion OP_GT {: auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); :} expresion 
+comparacion         ::= expresion OP_GT {: auxComparacion2 = punteroExpresion.pop(); RESULT= new Symbol(-1); :} expresion 
                     {:
-                    	punteroComparacion = new NodoIntermedio("OP_GT", auxComparacion2, punteroExpresion);
+                    	punteroComparacion = new NodoIntermedio("OP_GT", auxComparacion2, punteroExpresion.pop());
                     :}
-                    | expresion OP_LT{: auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); :} expresion
+                    | expresion OP_LT{: auxComparacion2 = punteroExpresion.pop(); RESULT= new Symbol(-1); :} expresion
                     {:
-                    	punteroComparacion = new NodoIntermedio("OP_LT", auxComparacion2, punteroExpresion);
+                    	punteroComparacion = new NodoIntermedio("OP_LT", auxComparacion2, punteroExpresion.pop());
                     :}
-                    | expresion OP_GTE{: auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); :} expresion 
+                    | expresion OP_GTE{: auxComparacion2 = punteroExpresion.pop(); RESULT= new Symbol(-1); :} expresion 
                     {:
-                    	punteroComparacion = new NodoIntermedio("OP_GTE", auxComparacion2, punteroExpresion);
+                    	punteroComparacion = new NodoIntermedio("OP_GTE", auxComparacion2, punteroExpresion.pop());
                     :}
-                    | expresion OP_LTE{: auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); :} expresion
+                    | expresion OP_LTE{: auxComparacion2 = punteroExpresion.pop(); RESULT= new Symbol(-1); :} expresion
                     {:
-                    	punteroComparacion = new NodoIntermedio("OP_LTE", auxComparacion2, punteroExpresion);
+                    	punteroComparacion = new NodoIntermedio("OP_LTE", auxComparacion2, punteroExpresion.pop());
                     :}
-                    | expresion OP_EQ{: auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); :} expresion
+                    | expresion OP_EQ{: auxComparacion2 = punteroExpresion.pop(); RESULT= new Symbol(-1); :} expresion
                     {:
-                    	punteroComparacion = new NodoIntermedio("OP_EQ", auxComparacion2, punteroExpresion);
+                    	punteroComparacion = new NodoIntermedio("OP_EQ", auxComparacion2, punteroExpresion.pop());
                     :}
-                    | expresion OP_NE{: auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); :} expresion
+                    | expresion OP_NE{: auxComparacion2 = punteroExpresion.pop(); RESULT= new Symbol(-1); :} expresion
                     {:
-                    	punteroComparacion = new NodoIntermedio("OP_NE", auxComparacion2, punteroExpresion);
+                    	punteroComparacion = new NodoIntermedio("OP_NE", auxComparacion2, punteroExpresion.pop());
                     :};
 
 /*
@@ -321,7 +322,7 @@ while               ::= WHILE PAREN_OPEN condicion PAREN_CLOSE programa ENDWHILE
 */
 display             ::= DISPLAY expresion
                     {:
-                    	punteroDisplay = new NodoIntermedio("DISPLAY", new Hoja("NULL"), punteroExpresion);
+                    	punteroDisplay = new NodoIntermedio("DISPLAY", new Hoja(""), punteroExpresion.pop());
                          System.out.println("display -> display expresion");
                     :};
 /*
@@ -335,16 +336,16 @@ get                ::= GET IDENTIFICADOR:ID
 /*
             for
 */
-for                ::= FOR asignacion TO expresion programa NEXT IDENTIFICADOR:ID
+for                ::= FOR asignacion TO expresion {: auxFor = punteroAsignacion; RESULT= new Symbol(-1); :} programa NEXT IDENTIFICADOR:ID
                     {:
-                    	auxTo = new NodoIntermedio("TO", new Hoja(ID), punteroExpresion);
+                    	auxTo = new NodoIntermedio("TO", auxFor, punteroExpresion.pop());
                     	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma.pop());
                          System.out.println("for -> for asignacion TO expresion programa NEXT identificador");
                     :}
-					| FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA:CTE CORCHETE_CLOSE programa NEXT IDENTIFICADOR:ID
+					| FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA:CTE CORCHETE_CLOSE {: auxFor = punteroAsignacion; RESULT= new Symbol(-1); :} programa NEXT IDENTIFICADOR:ID
                     {:
-                    	auxBy = new NodoIntermedio("BY", new Hoja(ID), new Hoja(CTE));
-                    	auxTo = new NodoIntermedio("TO", auxBy, punteroExpresion);
+                    	auxBy = new NodoIntermedio("BY", auxFor, new Hoja(CTE));
+                    	auxTo = new NodoIntermedio("TO", auxBy, punteroExpresion.pop());
                     	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma.pop());
                          System.out.println("for -> FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA CORCHETE_CLOSE programa NEXT identificador");
                     :};
