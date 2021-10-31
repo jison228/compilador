@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Queue;
 import com.unlam.compilador.*;
+import java.util.Stack;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -374,7 +375,7 @@ class CUP$AnalizadorSintactico$actions {
      public Nodo punteroExpresion = null;
      
      public NodoIntermedio punteroInicio = null;
-     public Nodo punteroPrograma = null;
+     public Stack<Nodo> punteroPrograma = new Stack<Nodo>();
      public Nodo punteroSentencia = null;
      public Nodo punteroDeclaracion = null;
      public Nodo punteroTiposDeDatos = null;
@@ -438,7 +439,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                    	 punteroInicio = (NodoIntermedio)punteroPrograma;
+                    	 punteroInicio = (NodoIntermedio)punteroPrograma.pop();
                          tablaDeSimbolos.save();
                          punteroInicio.save();
                          System.out.println("Compilacion exitosa.");
@@ -452,7 +453,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                    	punteroPrograma = new NodoIntermedio("SIG", punteroPrograma, punteroSentencia);
+                    	punteroPrograma.push( new NodoIntermedio("SIG", punteroPrograma.pop(), punteroSentencia));
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("programa",1, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -463,7 +464,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-	                     punteroPrograma = punteroSentencia;
+	                     punteroPrograma.push(punteroSentencia);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("programa",1, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -474,8 +475,9 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-	                     punteroSentencia = punteroDeclaracion;
                          System.out.println("sentencia -> declaracion");
+	                     punteroSentencia = punteroDeclaracion;
+                         System.out.println("se apunto punteroSentencia a: " + punteroDeclaracion.getVal());
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("sentencia",6, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -571,6 +573,8 @@ class CUP$AnalizadorSintactico$actions {
               Symbol RESULT =null;
 		 
                          System.out.println("declaracion -> DIM declaracion ");
+                         punteroDeclaracion = new Hoja("declaracion");
+                         System.out.println("se apunto punteroDeclaracion a: " + punteroDeclaracion.getVal());
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("declaracion",2, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-7)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -800,7 +804,7 @@ class CUP$AnalizadorSintactico$actions {
               Symbol RESULT =null;
 		
 	                     punteroFactor = punteroExpresion;
-                         System.out.println("se apunto punteroFactor a: expresion");
+                         System.out.println("se apunto punteroFactor a: " + punteroExpresion.getVal() + "entre parentecis");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("factor",10, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -826,7 +830,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                    	punteroIf = new NodoIntermedio("IF", punteroCondicion, punteroPrograma);
+                    	punteroIf = new NodoIntermedio("IF", punteroCondicion, punteroPrograma.pop());
                          System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE programa ENDIF");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("if",13, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-5)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -837,7 +841,7 @@ class CUP$AnalizadorSintactico$actions {
           case 33: // NT$0 ::= 
             {
               Symbol RESULT =null;
- auxElse = punteroPrograma; RESULT= new Symbol(-1); 
+ auxElse = punteroPrograma.pop(); RESULT= new Symbol(-1); 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$0",19, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
@@ -850,7 +854,7 @@ class CUP$AnalizadorSintactico$actions {
                 RESULT = (Symbol) ((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-3)).value;
 		
                     	punteroIf = new NodoIntermedio("IF", punteroCondicion, 
-                    	  new NodoIntermedio("ELSE", auxElse, punteroPrograma)
+                    	  new NodoIntermedio("ELSE", auxElse, punteroPrograma.pop())
                     	);
                          System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE programa ELSE programa ENDIF");
                     
@@ -1061,7 +1065,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                    	punteroWhile = new NodoIntermedio("WHILE", punteroCondicion, punteroPrograma);
+                    	punteroWhile = new NodoIntermedio("WHILE", punteroCondicion, punteroPrograma.pop());
                          System.out.println("while -> WHILE PAREN_OPEN condicion PAREN_CLOSE programa ENDWHILE");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("while",14, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-5)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -1104,7 +1108,7 @@ class CUP$AnalizadorSintactico$actions {
 		String ID = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
                     	auxTo = new NodoIntermedio("TO", new Hoja(ID), punteroExpresion);
-                    	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma);
+                    	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma.pop());
                          System.out.println("for -> for asignacion TO expresion programa NEXT identificador");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("for",17, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-6)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -1124,7 +1128,7 @@ class CUP$AnalizadorSintactico$actions {
 		
                     	auxBy = new NodoIntermedio("BY", new Hoja(ID), new Hoja(CTE));
                     	auxTo = new NodoIntermedio("TO", auxBy, punteroExpresion);
-                    	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma);
+                    	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma.pop());
                          System.out.println("for -> FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA CORCHETE_CLOSE programa NEXT identificador");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("for",17, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-9)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);

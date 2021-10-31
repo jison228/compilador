@@ -2,27 +2,36 @@ SIG
    SIG
       SIG
          SIG
-ERRORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR IZQ IS NULL            OP_ASIG
-               a
-               OP_PLUS
-                  2
-                  OP_MULTI
-                     2
-                     10
+            SIG
+               declaracion
+               declaracion
+            declaracion
          OP_ASIG
-            b
-            OP_MINUS
+            a
+            OP_PLUS
+               99
                OP_MULTI
-                  OP_MULTI
-                     234
-                     77
-                  OP_MULTI
-                     234
-                     77
-               34
-      DISPLAY
-         NULL
+                  2
+                  10
+      OP_ASIG
+         b
+         OP_MINUS
+            OP_MULTI
+               OP_MULTI
+                  123
+                  234
+               77
+            34
+   IF
+      OP_GTE
          a
-   DISPLAY
-      NULL
-      b
+         b
+      ELSE
+         OP_ASIG
+            a
+            10
+         OP_ASIG
+            a
+            2
+
+Sun Oct 31 01:16:53 ART 2021

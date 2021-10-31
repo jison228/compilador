@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Queue;
 import com.unlam.compilador.*;
+import java.util.Stack;
 
 // Codigo que se le agrega a las acciones gramaticales
 action code
@@ -16,7 +17,7 @@ action code
      public Nodo punteroExpresion = null;
      
      public NodoIntermedio punteroInicio = null;
-     public Nodo punteroPrograma = null;
+     public Stack<Nodo> punteroPrograma = new Stack<Nodo>();
      public Nodo punteroSentencia = null;
      public Nodo punteroDeclaracion = null;
      public Nodo punteroTiposDeDatos = null;
@@ -80,7 +81,7 @@ start with inicio;
 //Reglas gramaticales
 inicio         	::= programa
                     {:
-                    	 punteroInicio = (NodoIntermedio)punteroPrograma;
+                    	 punteroInicio = (NodoIntermedio)punteroPrograma.pop();
                          tablaDeSimbolos.save();
                          punteroInicio.save();
                          System.out.println("Compilacion exitosa.");
@@ -88,11 +89,11 @@ inicio         	::= programa
 
 programa      		::= programa sentencia
                     {:
-                    	punteroPrograma = new NodoIntermedio("SIG", punteroPrograma, punteroSentencia);
+                    	punteroPrograma.push( new NodoIntermedio("SIG", punteroPrograma.pop(), punteroSentencia));
                     :}
                     | sentencia
                     {:
-	                     punteroPrograma = punteroSentencia;
+	                     punteroPrograma.push(punteroSentencia);
                     :};
 
 sentencia           ::= declaracion
@@ -253,13 +254,13 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
 */
 if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE programa ENDIF
                     {:
-                    	punteroIf = new NodoIntermedio("IF", punteroCondicion, punteroPrograma);
+                    	punteroIf = new NodoIntermedio("IF", punteroCondicion, punteroPrograma.pop());
                          System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE programa ENDIF");
                     :}
-                    | IF PAREN_OPEN condicion PAREN_CLOSE programa {: auxElse = punteroPrograma; RESULT= new Symbol(-1); :} ELSE programa ENDIF
+                    | IF PAREN_OPEN condicion PAREN_CLOSE programa {: auxElse = punteroPrograma.pop(); RESULT= new Symbol(-1); :} ELSE programa ENDIF
                     {:
                     	punteroIf = new NodoIntermedio("IF", punteroCondicion, 
-                    	  new NodoIntermedio("ELSE", auxElse, punteroPrograma)
+                    	  new NodoIntermedio("ELSE", auxElse, punteroPrograma.pop())
                     	);
                          System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE programa ELSE programa ENDIF");
                     :};
@@ -312,7 +313,7 @@ comparacion         ::= expresion OP_GT {: auxComparacion2 = punteroExpresion; R
 
 while               ::= WHILE PAREN_OPEN condicion PAREN_CLOSE programa ENDWHILE
                     {:
-                    	punteroWhile = new NodoIntermedio("WHILE", punteroCondicion, punteroPrograma);
+                    	punteroWhile = new NodoIntermedio("WHILE", punteroCondicion, punteroPrograma.pop());
                          System.out.println("while -> WHILE PAREN_OPEN condicion PAREN_CLOSE programa ENDWHILE");
                     :};
 /*
@@ -337,14 +338,14 @@ get                ::= GET IDENTIFICADOR:ID
 for                ::= FOR asignacion TO expresion programa NEXT IDENTIFICADOR:ID
                     {:
                     	auxTo = new NodoIntermedio("TO", new Hoja(ID), punteroExpresion);
-                    	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma);
+                    	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma.pop());
                          System.out.println("for -> for asignacion TO expresion programa NEXT identificador");
                     :}
 					| FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA:CTE CORCHETE_CLOSE programa NEXT IDENTIFICADOR:ID
                     {:
                     	auxBy = new NodoIntermedio("BY", new Hoja(ID), new Hoja(CTE));
                     	auxTo = new NodoIntermedio("TO", auxBy, punteroExpresion);
-                    	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma);
+                    	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma.pop());
                          System.out.println("for -> FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA CORCHETE_CLOSE programa NEXT identificador");
                     :};
 /*

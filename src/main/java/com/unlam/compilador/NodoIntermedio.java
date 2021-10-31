@@ -33,6 +33,8 @@ public class NodoIntermedio implements Nodo {
         try (BufferedWriter br = new BufferedWriter(new FileWriter("intermedio.txt"))) {
 
         	br.write(this.getString(""));
+        	
+        	br.write("\n" + java.util.Calendar.getInstance().getTime());
 
         } catch (Exception e) {
             LOGGER.severe("Ocurrio un error al guardar el archivo");

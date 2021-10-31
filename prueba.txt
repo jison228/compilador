@@ -2,3 +2,19 @@
 DIM [ a, b, d, f ] AS [ integer, integer, real ,string]
 DIM [ c, e ] AS [ integer, real]
 DIM [ nousada ] AS [ string]
+
+ 
+
+*/ Asignacion de expresiones /*
+a := 99 + 2*10
+b := 123 * 234 * 77 - 34
+
+
+*/ If con else sin while/*
+if (a >= b)
+    a := 10
+else
+    a := 2
+ENDIF
+
+ 

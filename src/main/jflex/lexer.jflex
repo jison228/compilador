@@ -19,7 +19,7 @@ import java_cup.runtime.*;
     int RANGO_STRING = 30;
     int RANGO_IDENTIFICADOR = 256;
     private Symbol symbol(int type) {
-          System.out.println("[LEX] TOKEN < " + Simbolos.terminalNames[type] + " > : " + yytext());
+          //System.out.println("[LEX] TOKEN < " + Simbolos.terminalNames[type] + " > : " + yytext());
           return new Symbol(type, yyline, yycolumn, yytext());
     }
     private Symbol symbol(int type, Object value) {
