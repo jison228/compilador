@@ -80,9 +80,9 @@ start with inicio;
 //Reglas gramaticales
 inicio         	::= programa
                     {:
-                    	//punteroInicio = (NodoIntermedio)punteroPrograma;
+                    	 punteroInicio = (NodoIntermedio)punteroPrograma;
                          tablaDeSimbolos.save();
-                         //punteroInicio.save();
+                         punteroInicio.save();
                          System.out.println("Compilacion exitosa.");
                     :};  
 
@@ -250,7 +250,7 @@ if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE programa ENDIF
                     	punteroIf = new NodoIntermedio("IF", punteroCondicion, punteroPrograma);
                          System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE programa ENDIF");
                     :}
-                    | IF PAREN_OPEN condicion PAREN_CLOSE programa {: auxElse = punteroPrograma; :} ELSE programa ENDIF
+                    | IF PAREN_OPEN condicion PAREN_CLOSE programa {: auxElse = punteroPrograma; RESULT= new Symbol(-1); :} ELSE programa ENDIF
                     {:
                     	punteroIf = new NodoIntermedio("IF", punteroCondicion, 
                     	  new NodoIntermedio("ELSE", auxElse, punteroPrograma)
@@ -258,11 +258,11 @@ if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE programa ENDIF
                          System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE programa ELSE programa ENDIF");
                     :};
 
-condicion           ::= comparacion {: auxComparacion = punteroComparacion; :} OP_AND comparacion 
+condicion           ::= comparacion {: auxComparacion = punteroComparacion; RESULT= new Symbol(-1); :} OP_AND comparacion 
                     {:
                     	punteroCondicion = new NodoIntermedio("OP_AND", auxComparacion, punteroComparacion);
                     :}
-                    | comparacion {: auxComparacion = punteroComparacion; :} OP_OR comparacion
+                    | comparacion {: auxComparacion = punteroComparacion; RESULT= new Symbol(-1); :} OP_OR comparacion
                     {:
                     	punteroCondicion = new NodoIntermedio("OP_OR", auxComparacion, punteroComparacion);
                     :}
@@ -275,27 +275,27 @@ condicion           ::= comparacion {: auxComparacion = punteroComparacion; :} O
                     	punteroCondicion = punteroComparacion;
                     :};
 
-comparacion         ::= expresion OP_GT {: auxComparacion2 = punteroExpresion; :} expresion 
+comparacion         ::= expresion OP_GT {: auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); :} expresion 
                     {:
                     	punteroComparacion = new NodoIntermedio("OP_GT", auxComparacion2, punteroExpresion);
                     :}
-                    | expresion OP_LT{: auxComparacion2 = punteroExpresion; :} expresion
+                    | expresion OP_LT{: auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); :} expresion
                     {:
                     	punteroComparacion = new NodoIntermedio("OP_LT", auxComparacion2, punteroExpresion);
                     :}
-                    | expresion OP_GTE{: auxComparacion2 = punteroExpresion; :} expresion 
+                    | expresion OP_GTE{: auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); :} expresion 
                     {:
                     	punteroComparacion = new NodoIntermedio("OP_GTE", auxComparacion2, punteroExpresion);
                     :}
-                    | expresion OP_LTE{: auxComparacion2 = punteroExpresion; :} expresion
+                    | expresion OP_LTE{: auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); :} expresion
                     {:
                     	punteroComparacion = new NodoIntermedio("OP_LTE", auxComparacion2, punteroExpresion);
                     :}
-                    | expresion OP_EQ{: auxComparacion2 = punteroExpresion; :} expresion
+                    | expresion OP_EQ{: auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); :} expresion
                     {:
                     	punteroComparacion = new NodoIntermedio("OP_EQ", auxComparacion2, punteroExpresion);
                     :}
-                    | expresion OP_NE{: auxComparacion2 = punteroExpresion; :} expresion
+                    | expresion OP_NE{: auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); :} expresion
                     {:
                     	punteroComparacion = new NodoIntermedio("OP_NE", auxComparacion2, punteroExpresion);
                     :};

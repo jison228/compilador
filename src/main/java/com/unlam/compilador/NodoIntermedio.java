@@ -14,6 +14,7 @@ public class NodoIntermedio implements Nodo {
 	private String val;
 	
 	public NodoIntermedio(String val,Nodo izq, Nodo der) {
+		this.val=val;
 		this.izq = izq;
 		this.der = der;
 	}

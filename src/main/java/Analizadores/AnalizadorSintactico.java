@@ -438,9 +438,9 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                    	//punteroInicio = (NodoIntermedio)punteroPrograma;
+                    	 punteroInicio = (NodoIntermedio)punteroPrograma;
                          tablaDeSimbolos.save();
-                         //punteroInicio.save();
+                         punteroInicio.save();
                          System.out.println("Compilacion exitosa.");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("inicio",0, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -834,7 +834,7 @@ class CUP$AnalizadorSintactico$actions {
           case 33: // NT$0 ::= 
             {
               Symbol RESULT =null;
- auxElse = punteroPrograma; 
+ auxElse = punteroPrograma; RESULT= new Symbol(-1); 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$0",19, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
@@ -859,7 +859,7 @@ class CUP$AnalizadorSintactico$actions {
           case 35: // NT$1 ::= 
             {
               Symbol RESULT =null;
- auxComparacion = punteroComparacion; 
+ auxComparacion = punteroComparacion; RESULT= new Symbol(-1); 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$1",20, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
@@ -881,7 +881,7 @@ class CUP$AnalizadorSintactico$actions {
           case 37: // NT$2 ::= 
             {
               Symbol RESULT =null;
- auxComparacion = punteroComparacion; 
+ auxComparacion = punteroComparacion; RESULT= new Symbol(-1); 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$2",21, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
@@ -925,7 +925,7 @@ class CUP$AnalizadorSintactico$actions {
           case 41: // NT$3 ::= 
             {
               Symbol RESULT =null;
- auxComparacion2 = punteroExpresion; 
+ auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$3",22, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
@@ -947,7 +947,7 @@ class CUP$AnalizadorSintactico$actions {
           case 43: // NT$4 ::= 
             {
               Symbol RESULT =null;
- auxComparacion2 = punteroExpresion; 
+ auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$4",23, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
@@ -969,7 +969,7 @@ class CUP$AnalizadorSintactico$actions {
           case 45: // NT$5 ::= 
             {
               Symbol RESULT =null;
- auxComparacion2 = punteroExpresion; 
+ auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$5",24, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
@@ -991,7 +991,7 @@ class CUP$AnalizadorSintactico$actions {
           case 47: // NT$6 ::= 
             {
               Symbol RESULT =null;
- auxComparacion2 = punteroExpresion; 
+ auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$6",25, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
@@ -1013,7 +1013,7 @@ class CUP$AnalizadorSintactico$actions {
           case 49: // NT$7 ::= 
             {
               Symbol RESULT =null;
- auxComparacion2 = punteroExpresion; 
+ auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$7",26, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
@@ -1025,7 +1025,7 @@ class CUP$AnalizadorSintactico$actions {
               // propagate RESULT from NT$7
                 RESULT = (Symbol) ((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)).value;
 		
-                    	//punteroComparacion = new NodoIntermedio("OP_EQ", auxComparacion2, punteroExpresion);
+                    	punteroComparacion = new NodoIntermedio("OP_EQ", auxComparacion2, punteroExpresion);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("comparacion",12, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-3)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -1035,7 +1035,7 @@ class CUP$AnalizadorSintactico$actions {
           case 51: // NT$8 ::= 
             {
               Symbol RESULT =null;
- auxComparacion2 = punteroExpresion; 
+ auxComparacion2 = punteroExpresion; RESULT= new Symbol(-1); 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$8",27, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;

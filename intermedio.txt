@@ -1,0 +1,28 @@
+SIG
+   SIG
+      SIG
+         SIG
+ERRORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR IZQ IS NULL            OP_ASIG
+               a
+               OP_PLUS
+                  2
+                  OP_MULTI
+                     2
+                     10
+         OP_ASIG
+            b
+            OP_MINUS
+               OP_MULTI
+                  OP_MULTI
+                     234
+                     77
+                  OP_MULTI
+                     234
+                     77
+               34
+      DISPLAY
+         NULL
+         a
+   DISPLAY
+      NULL
+      b
