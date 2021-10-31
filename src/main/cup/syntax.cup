@@ -97,8 +97,9 @@ programa      		::= programa sentencia
 
 sentencia           ::= declaracion
                     {:
-	                     punteroSentencia = punteroDeclaracion;
                          System.out.println("sentencia -> declaracion");
+	                     punteroSentencia = punteroDeclaracion;
+                         System.out.println("se apunto punteroSentencia a: " + punteroDeclaracion.getVal());
                     :}
                     | asignacion 
                     {:
@@ -143,6 +144,8 @@ sentencia           ::= declaracion
 declaracion         ::= DIM CORCHETE_OPEN identificadores CORCHETE_CLOSE OP_TIPO CORCHETE_OPEN tiposdedato CORCHETE_CLOSE
                     {: 
                          System.out.println("declaracion -> DIM declaracion ");
+                         punteroDeclaracion = new Hoja("declaracion");
+                         System.out.println("se apunto punteroDeclaracion a: " + punteroDeclaracion.getVal());
                     :};
 
 tiposdedato         ::= tipodedato
@@ -237,7 +240,7 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     | PAREN_OPEN expresion PAREN_CLOSE 
                     {:
 	                     punteroFactor = punteroExpresion;
-                         System.out.println("se apunto punteroFactor a: expresion");
+                         System.out.println("se apunto punteroFactor a: " + punteroExpresion.getVal() + "entre parentecis");
                     :}
                     | IDENTIFICADOR:ID
                     {:
