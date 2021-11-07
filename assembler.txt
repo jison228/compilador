@@ -1,0 +1,37 @@
+include number.asm
+include macros2.asm
+
+.MODEL LARGE ;Modelo de Memoria
+ .386 ;Tipo de Procesador
+.STACK 200h ;Bytes en el Stack
+
+.DATA
+ 	_20	dd	20.0
+	a	dd	?
+	b	dd	?
+	c	dd	?
+	d	dd	?
+	e	dd	?
+	f	dd	?
+	z	dd	?
+
+MOV R1,b
+MUL R1, c
+MOV @aux0, R1
+MOV R1,a
+ADD R1, @aux0
+MOV @aux1, R1
+MOV R1,e
+ADD R1, f
+MOV @aux2, R1
+MOV R1,d
+DIV R1, @aux2
+MOV @aux3, R1
+MOV R1,@aux1
+SUB R1, @aux3
+MOV @aux4, R1
+MOV R1,@aux4
+ADD R1, _20
+MOV @aux5, R1
+MOV R1,@aux5
+MOV z, R1

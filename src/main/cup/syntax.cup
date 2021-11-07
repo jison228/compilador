@@ -89,7 +89,7 @@ inicio         	::= programa
                     	 punteroInicio = (NodoIntermedio)punteroPrograma.pop();
                          tablaDeSimbolos.save();
                          punteroInicio.save();
-                         punteroInicio.Execute();
+                         punteroInicio.GenerarAsembler(tablaDeSimbolos);
                          System.out.println("Compilacion exitosa.");
                     :};  
 

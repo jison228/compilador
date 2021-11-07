@@ -456,7 +456,7 @@ class CUP$AnalizadorSintactico$actions {
                     	 punteroInicio = (NodoIntermedio)punteroPrograma.pop();
                          tablaDeSimbolos.save();
                          punteroInicio.save();
-                         punteroInicio.Execute();
+                         punteroInicio.GenerarAsembler(tablaDeSimbolos);
                          System.out.println("Compilacion exitosa.");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("inicio",0, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -774,7 +774,7 @@ class CUP$AnalizadorSintactico$actions {
 		String CTE_ENT = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
                     	auxTipo = "CTE_INTEGER";
-	                     punteroFactor.push(new Hoja(CTE_ENT));
+	                     punteroFactor.push(new Hoja("_"+CTE_ENT));
                          System.out.println("se apunto punteroFactor a: " + CTE_ENT);
                          tablaDeSimbolos.add("_"+CTE_ENT, null, CTE_ENT, null);
                     
@@ -791,7 +791,7 @@ class CUP$AnalizadorSintactico$actions {
 		String CTE_FLOAT = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
                     	auxTipo = "CTE_FLOAT";
-	                     punteroFactor.push(new Hoja(CTE_FLOAT));
+	                     punteroFactor.push(new Hoja("_"+CTE_FLOAT));
                          System.out.println("se apunto punteroFactor a: " + CTE_FLOAT);
                          tablaDeSimbolos.add("_"+CTE_FLOAT, null, CTE_FLOAT, null);                         
                     
@@ -808,7 +808,7 @@ class CUP$AnalizadorSintactico$actions {
 		String CTE_STRING = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
                     	auxTipo = "CTE_STRING";
-	                     punteroFactor.push( new Hoja(CTE_STRING));
+	                     punteroFactor.push( new Hoja("_"+CTE_STRING));
                          System.out.println("se apunto punteroFactor a: " + CTE_STRING);
                          String str = CTE_STRING.replace("\"", "");
                          tablaDeSimbolos.add("_"+str, null, str, str.length());
