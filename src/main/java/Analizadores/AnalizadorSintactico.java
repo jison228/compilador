@@ -409,6 +409,8 @@ class CUP$AnalizadorSintactico$actions {
      public Nodo auxFor = null;
      
      public int IdsCount = 0;
+     
+     public String auxTipo;
 
   private final AnalizadorSintactico parser;
 
@@ -608,7 +610,7 @@ class CUP$AnalizadorSintactico$actions {
               Symbol RESULT =null;
 		
                          //tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
-                         this.typesList.add("INTEGER");
+                         this.typesList.add("CTE_INTEGER");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("tipodedato",4, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -620,7 +622,7 @@ class CUP$AnalizadorSintactico$actions {
               Symbol RESULT =null;
 		
                          //tablaDeSimbolos.addIdentifiers(this.identifierList, "FLOAT");  
-                         this.typesList.add("REAL");                     
+                         this.typesList.add("CTE_FLOAT");                     
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("tipodedato",4, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -632,7 +634,7 @@ class CUP$AnalizadorSintactico$actions {
               Symbol RESULT =null;
 		
                          //tablaDeSimbolos.addIdentifiers(this.identifierList, "STRING");  
-                         this.typesList.add("STRING");                       
+                         this.typesList.add("CTE_STRING");                       
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("tipodedato",4, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -674,6 +676,18 @@ class CUP$AnalizadorSintactico$actions {
 		int IDright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)).right;
 		String ID = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)).value;
 		
+                    	if(!this.identifierList.contains(ID)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+"' no ha sido declarado."); 
+                    	}
+                    	
+                    	
+                    	String tipoId = this.typesList.get(this.identifierList.indexOf(ID));
+                    	if(!tipoId.equals(auxTipo)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+" : " + tipoId +"' no es asignable a " + auxTipo); 
+                    	}
+                    	
+                    	System.out.println("asig numero -> " + auxTipo);
+                    	                    	
                     	punteroAsignacion = new NodoIntermedio("OP_ASIG", new Hoja(ID), punteroExpresion.pop());
                          System.out.println("asignacion -> IDENTIFICADOR OP_ASIG expresion");
                     
@@ -758,6 +772,7 @@ class CUP$AnalizadorSintactico$actions {
 		int CTE_ENTright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String CTE_ENT = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
+                    	auxTipo = "CTE_INTEGER";
 	                     punteroFactor.push(new Hoja(CTE_ENT));
                          System.out.println("se apunto punteroFactor a: " + CTE_ENT);
                          tablaDeSimbolos.add("_"+CTE_ENT, null, CTE_ENT, null);
@@ -774,6 +789,7 @@ class CUP$AnalizadorSintactico$actions {
 		int CTE_FLOATright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String CTE_FLOAT = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
+                    	auxTipo = "CTE_FLOAT";
 	                     punteroFactor.push(new Hoja(CTE_FLOAT));
                          System.out.println("se apunto punteroFactor a: " + CTE_FLOAT);
                          tablaDeSimbolos.add("_"+CTE_FLOAT, null, CTE_FLOAT, null);                         
@@ -790,6 +806,7 @@ class CUP$AnalizadorSintactico$actions {
 		int CTE_STRINGright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String CTE_STRING = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
+                    	auxTipo = "CTE_STRING";
 	                     punteroFactor.push( new Hoja(CTE_STRING));
                          System.out.println("se apunto punteroFactor a: " + CTE_STRING);
                          String str = CTE_STRING.replace("\"", "");
@@ -819,8 +836,12 @@ class CUP$AnalizadorSintactico$actions {
 		int IDright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String ID = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-	                     punteroFactor.push( new Hoja(ID));
-                         System.out.println("se apunto punteroFactor a: " + ID);
+                    	if(!this.identifierList.contains(ID)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+"' no ha sido declarado."); 
+                    	}
+                    	auxTipo = this.typesList.get(this.identifierList.indexOf(ID));
+	                    punteroFactor.push( new Hoja(ID));
+                        System.out.println("se apunto punteroFactor a: " + ID);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("factor",10, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -1105,6 +1126,9 @@ class CUP$AnalizadorSintactico$actions {
 		int IDright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String ID = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
+                    	if(!this.identifierList.contains(ID)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+"' no ha sido declarado."); 
+                    	}
                     	punteroGet = new NodoIntermedio("GET", new Hoja("NOP"), new Hoja(ID));
                          System.out.println("get -> get IDENTIFICADOR");
                     
@@ -1131,6 +1155,9 @@ class CUP$AnalizadorSintactico$actions {
 		int IDright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String ID = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
+                    	if(!this.identifierList.contains(ID)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+"' no ha sido declarado."); 
+                    	}
                     	auxTo = new NodoIntermedio("TO", auxFor, punteroExpresion.pop());
                     	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma.pop());
                          System.out.println("for -> for asignacion TO expresion programa NEXT identificador");
@@ -1164,6 +1191,9 @@ class CUP$AnalizadorSintactico$actions {
 		int IDright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String ID = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
+                    	if(!this.identifierList.contains(ID)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+"' no ha sido declarado."); 
+                    	}
                     	auxBy = new NodoIntermedio("BY", auxFor, new Hoja(CTE));
                     	auxTo = new NodoIntermedio("TO", auxBy, punteroExpresion.pop());
                     	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma.pop());
@@ -1193,6 +1223,9 @@ class CUP$AnalizadorSintactico$actions {
 		int IDright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String ID = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
+                    	if(!this.identifierList.contains(ID)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+"' no ha sido declarado."); 
+                    	}
                     	IdsCount = 1;
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("identificadoresLong",19, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);

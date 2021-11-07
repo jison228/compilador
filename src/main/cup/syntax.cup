@@ -42,6 +42,8 @@ action code
      public Nodo auxFor = null;
      
      public int IdsCount = 0;
+     
+     public String auxTipo;
 :}
 
 // Codigo que se le agrega al parser
@@ -159,17 +161,17 @@ tiposdedato         ::= tipodedato
 tipodedato          ::= INTEGER_TYPE
                     {:
                          //tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
-                         this.typesList.add("INTEGER");
+                         this.typesList.add("CTE_INTEGER");
                     :}
                     | FLOAT_TYPE
                     {:
                          //tablaDeSimbolos.addIdentifiers(this.identifierList, "FLOAT");  
-                         this.typesList.add("REAL");                     
+                         this.typesList.add("CTE_FLOAT");                     
                     :}
                     | STRING_TYPE
                     {:
                          //tablaDeSimbolos.addIdentifiers(this.identifierList, "STRING");  
-                         this.typesList.add("STRING");                       
+                         this.typesList.add("CTE_STRING");                       
                     :};
 
 identificadores     ::= IDENTIFICADOR:ID
@@ -185,6 +187,18 @@ identificadores     ::= IDENTIFICADOR:ID
 */
 asignacion          ::= IDENTIFICADOR:ID OP_ASIG expresion
                     {:
+                    	if(!this.identifierList.contains(ID)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+"' no ha sido declarado."); 
+                    	}
+                    	
+                    	
+                    	String tipoId = this.typesList.get(this.identifierList.indexOf(ID));
+                    	if(!tipoId.equals(auxTipo)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+" : " + tipoId +"' no es asignable a " + auxTipo); 
+                    	}
+                    	
+                    	System.out.println("asig numero -> " + auxTipo);
+                    	                    	
                     	punteroAsignacion = new NodoIntermedio("OP_ASIG", new Hoja(ID), punteroExpresion.pop());
                          System.out.println("asignacion -> IDENTIFICADOR OP_ASIG expresion");
                     :};
@@ -220,18 +234,21 @@ termino             ::= termino OP_MULTI factor
 
 factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     {:
+                    	auxTipo = "CTE_INTEGER";
 	                     punteroFactor.push(new Hoja(CTE_ENT));
                          System.out.println("se apunto punteroFactor a: " + CTE_ENT);
                          tablaDeSimbolos.add("_"+CTE_ENT, null, CTE_ENT, null);
                     :}
                     | CONSTANTE_FLOAT:CTE_FLOAT
                     {:
+                    	auxTipo = "CTE_FLOAT";
 	                     punteroFactor.push(new Hoja(CTE_FLOAT));
                          System.out.println("se apunto punteroFactor a: " + CTE_FLOAT);
                          tablaDeSimbolos.add("_"+CTE_FLOAT, null, CTE_FLOAT, null);                         
                     :} 
                     | CONSTANTE_STRING:CTE_STRING
                     {:
+                    	auxTipo = "CTE_STRING";
 	                     punteroFactor.push( new Hoja(CTE_STRING));
                          System.out.println("se apunto punteroFactor a: " + CTE_STRING);
                          String str = CTE_STRING.replace("\"", "");
@@ -244,8 +261,12 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     :}
                     | IDENTIFICADOR:ID
                     {:
-	                     punteroFactor.push( new Hoja(ID));
-                         System.out.println("se apunto punteroFactor a: " + ID);
+                    	if(!this.identifierList.contains(ID)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+"' no ha sido declarado."); 
+                    	}
+                    	auxTipo = this.typesList.get(this.identifierList.indexOf(ID));
+	                    punteroFactor.push( new Hoja(ID));
+                        System.out.println("se apunto punteroFactor a: " + ID);
                     :}
                     | long 
                     {:
@@ -333,6 +354,9 @@ display             ::= DISPLAY expresion
 */
 get                ::= GET IDENTIFICADOR:ID
                     {:
+                    	if(!this.identifierList.contains(ID)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+"' no ha sido declarado."); 
+                    	}
                     	punteroGet = new NodoIntermedio("GET", new Hoja("NOP"), new Hoja(ID));
                          System.out.println("get -> get IDENTIFICADOR");
                     :};
@@ -341,12 +365,18 @@ get                ::= GET IDENTIFICADOR:ID
 */
 for                ::= FOR asignacion TO expresion {: auxFor = punteroAsignacion; RESULT= new Symbol(-1); :} programa NEXT IDENTIFICADOR:ID
                     {:
+                    	if(!this.identifierList.contains(ID)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+"' no ha sido declarado."); 
+                    	}
                     	auxTo = new NodoIntermedio("TO", auxFor, punteroExpresion.pop());
                     	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma.pop());
                          System.out.println("for -> for asignacion TO expresion programa NEXT identificador");
                     :}
 					| FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA:CTE CORCHETE_CLOSE {: auxFor = punteroAsignacion; RESULT= new Symbol(-1); :} programa NEXT IDENTIFICADOR:ID
                     {:
+                    	if(!this.identifierList.contains(ID)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+"' no ha sido declarado."); 
+                    	}
                     	auxBy = new NodoIntermedio("BY", auxFor, new Hoja(CTE));
                     	auxTo = new NodoIntermedio("TO", auxBy, punteroExpresion.pop());
                     	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma.pop());
@@ -363,6 +393,9 @@ long                ::= LONG PAREN_OPEN CORCHETE_OPEN identificadoresLong CORCHE
                     
 identificadoresLong     ::= IDENTIFICADOR:ID
                     {:
+                    	if(!this.identifierList.contains(ID)){
+                    		throw new Error("Error de sintaxis: El ID '"+ID+"' no ha sido declarado."); 
+                    	}
                     	IdsCount = 1;
                     :}
                     | identificadoresLong COMA IDENTIFICADOR:ID
