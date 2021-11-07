@@ -1,9 +1,11 @@
-*/ Declaracion variables /* 
+*/ Declaracion variables/* 
 DIM [ a, b, d, f ] AS [ integer, integer, real ,string]
 DIM [ c, e ] AS [ integer, real]
 DIM [ nousada ] AS [ string]
+DIM [ u ] AS [ integer]
 
  
+u := 6
 
 */ Asignacion de expresiones /*
 a := 99 + 2*10
@@ -91,7 +93,7 @@ GET b
  
 
 */ Descomentar para chequeo de cota enteros /*
-a := 65.536 
+d := 65.536 
 
  
 

@@ -1,4 +1,5 @@
 NOMBRE                        |TIPODATO                      |VALOR                         |LONGITUD                      
+_6                            |-                             |6                             |-                             
 _99                           |-                             |99                            |-                             
 _2                            |-                             |2                             |-                             
 _10                           |-                             |10                            |-                             
@@ -10,10 +11,11 @@ _0                            |-                             |0                 
 _7                            |-                             |7                             |-                             
 _30 caracteres es muy poco    |-                             |30 caracteres es muy poco     |25                            
 _65.536                       |-                             |65.536                        |-                             
-a                             |INTEGER                       |-                             |-                             
-b                             |INTEGER                       |-                             |-                             
-d                             |REAL                          |-                             |-                             
-f                             |STRING                        |-                             |-                             
-c                             |INTEGER                       |-                             |-                             
-e                             |REAL                          |-                             |-                             
-nousada                       |STRING                        |-                             |-                             
+a                             |CTE_INTEGER                   |-                             |-                             
+b                             |CTE_INTEGER                   |-                             |-                             
+d                             |CTE_FLOAT                     |-                             |-                             
+f                             |CTE_STRING                    |-                             |-                             
+c                             |CTE_INTEGER                   |-                             |-                             
+e                             |CTE_FLOAT                     |-                             |-                             
+nousada                       |CTE_STRING                    |-                             |-                             
+u                             |CTE_INTEGER                   |-                             |-                             

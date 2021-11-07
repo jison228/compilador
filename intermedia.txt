@@ -14,9 +14,15 @@ SIG
                                        SIG
                                           SIG
                                              SIG
+                                                SIG
+                                                   SIG
+                                                      declaracion
+                                                      declaracion
+                                                   declaracion
                                                 declaracion
-                                                declaracion
-                                             declaracion
+                                             OP_ASIG
+                                                u
+                                                6
                                           OP_ASIG
                                              a
                                              OP_PLUS
@@ -131,7 +137,7 @@ SIG
          NOP
          b
    OP_ASIG
-      a
+      d
       65.536
 
-Sun Oct 31 17:08:34 ART 2021
+Sun Nov 07 17:53:45 ART 2021
