@@ -59,7 +59,7 @@ SIG
                                        10
                               IF
                                  OP_NOT
-                                    NULL
+                                    NOP
                                     OP_GTE
                                        a
                                        b
@@ -79,7 +79,7 @@ SIG
                                  0
                         WHILE
                            OP_NOT
-                              NULL
+                              NOP
                               OP_EQ
                                  a
                                  b
@@ -88,19 +88,19 @@ SIG
                               0
                      WHILE
                         OP_NOT
-                           NULL
+                           NOP
                            OP_EQ
                               a
                               b
                         WHILE
                            OP_NOT
-                              NULL
+                              NOP
                               OP_EQ
                                  a
                                  b
                            WHILE
                               OP_NOT
-                                 NULL
+                                 NOP
                                  OP_EQ
                                     a
                                     b
@@ -140,4 +140,4 @@ SIG
       d
       65.536
 
-Sun Nov 07 17:53:45 ART 2021
+Sun Nov 07 18:36:45 ART 2021

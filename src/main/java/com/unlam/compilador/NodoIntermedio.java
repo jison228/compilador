@@ -3,6 +3,7 @@ package com.unlam.compilador;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import SymbolTable.SymbolTable;
@@ -23,8 +24,15 @@ public class NodoIntermedio implements Nodo {
 		return this.val;
 	}
 	
-	public void Execute() {
-		return;
+	public List<String> Execute() throws Exception {
+		switch(this.val) {
+			case "SIG":
+				List<String> res = izq.Execute();
+				res.addAll(der.Execute());
+				return res;
+			default:
+				throw new Exception("Not implemented case!!: " + this.val);
+		}
 	}
 	
 	public void save() {

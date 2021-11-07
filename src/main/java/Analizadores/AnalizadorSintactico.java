@@ -456,6 +456,7 @@ class CUP$AnalizadorSintactico$actions {
                     	 punteroInicio = (NodoIntermedio)punteroPrograma.pop();
                          tablaDeSimbolos.save();
                          punteroInicio.save();
+                         punteroInicio.Execute();
                          System.out.println("Compilacion exitosa.");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("inicio",0, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
