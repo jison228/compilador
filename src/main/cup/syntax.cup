@@ -300,7 +300,7 @@ condicion           ::= comparacion {: auxComparacion = punteroComparacion; RESU
                     :}
                     | OP_NOT PAREN_OPEN comparacion PAREN_CLOSE
                     {:
-                    	punteroCondicion = new NodoIntermedio("OP_NOT", new Hoja("NULL"), punteroComparacion);
+                    	punteroCondicion = new NodoIntermedio("OP_NOT", new Hoja("NOP"), punteroComparacion);
                     :}
                     | comparacion
                     {:

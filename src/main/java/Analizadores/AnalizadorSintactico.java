@@ -945,7 +945,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                    	punteroCondicion = new NodoIntermedio("OP_NOT", new Hoja("NULL"), punteroComparacion);
+                    	punteroCondicion = new NodoIntermedio("OP_NOT", new Hoja("NOP"), punteroComparacion);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("condicion",11, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-3)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
