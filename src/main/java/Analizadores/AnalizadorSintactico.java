@@ -790,7 +790,7 @@ class CUP$AnalizadorSintactico$actions {
 		int CTE_FLOATright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String CTE_FLOAT = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-                    	auxTipo = "CTE_FLOAT";
+                    	 auxTipo = "CTE_FLOAT";
 	                     punteroFactor.push(new Hoja("_"+CTE_FLOAT));
                          System.out.println("se apunto punteroFactor a: " + CTE_FLOAT);
                          tablaDeSimbolos.add("_"+CTE_FLOAT, "CTE_FLOAT", CTE_FLOAT, null);                         
@@ -807,7 +807,7 @@ class CUP$AnalizadorSintactico$actions {
 		int CTE_STRINGright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String CTE_STRING = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-                    	auxTipo = "CTE_STRING";
+                    	 auxTipo = "CTE_STRING";
                          System.out.println("se apunto punteroFactor a: " + CTE_STRING);
                          String str = CTE_STRING.replace("\"", "");
 	                     punteroFactor.push( new Hoja("_"+str.replace(" ", "_")));

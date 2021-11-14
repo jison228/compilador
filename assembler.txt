@@ -8,14 +8,14 @@ include macros2.asm
 .DATA
  	__0	dd	0.0
 	__1	dd	1.0
-	_99	dd	99.0
+	_2	dd	2.0
+	_3	dd	3.0
+	_10	dd	10.0
 	a	dd	?
 	b	dd	?
-	d	dd	?
-	f	dd	?
 	c	dd	?
 	e	dd	?
-	nousada	dd	?
+	@aux2	dd	?
 
 .CODE
 
@@ -25,8 +25,35 @@ MOV DS,EAX
 MOV ES,EAX
 
 
-MOV R1,_99
-MOV a, R1
+FLD _2
+FISTP a
+FLD _3
+FISTP b
+FILD a
+FLD _2
+FCOMP
+FSTSW AX
+SAHF
+FFREE
+JA _tag_de_verdadero_@aux0
+FLD __0
+FSTP @aux2
+JMP _tag_de_continuar_@aux1
+_tag_de_verdadero_@aux0:
+FLD __1
+FSTP @aux2
+_tag_de_continuar_@aux1:
+FLD @aux2
+FCOMP __1
+FSTSW AX
+SAHF
+FFREE
+JZ _tag_del_if_@aux3
+FLD _10
+FISTP a
+_tag_del_if_@aux3:
+DisplayInteger a
+newline 1
 MOV EAX, 4C00h
 INT 21h
 

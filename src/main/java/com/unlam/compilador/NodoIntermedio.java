@@ -34,6 +34,13 @@ public class NodoIntermedio implements Nodo {
 		return res;
 	}
 	
+	private String getAuxInt(SymbolTable st) {
+		String res ="@aux" + lastAux;
+		lastAux++;
+		st.add(res,  "CTE_FLOAT", "-", null);
+		return res;
+	}
+	
 	public String getVal() {
 		return this.val;
 	}
@@ -88,10 +95,12 @@ public class NodoIntermedio implements Nodo {
 	public void GenerarAsembler(SymbolTable tablaSimbolos) throws Exception{
 		List<String> res = new LinkedList<String>();
 		
+		List<String> auxCode = this.Execute(tablaSimbolos);
+		
 		res.add(generateHeaders(tablaSimbolos));
 		res.add(".CODE\n\n" + "start:\n" + "MOV EAX,@DATA\n" + "MOV DS,EAX\n" + "MOV ES,EAX\n\n" );
 
-		res.addAll(this.Execute(tablaSimbolos));
+		res.addAll(auxCode);
 
 		res.add(generateFooters());
 		
@@ -106,6 +115,22 @@ public class NodoIntermedio implements Nodo {
         }
 	}
 	
+	private void cargar(SymbolTable st,List<String> res,String val) {
+		if(st.getTipo(val).equals("CTE_INTEGER")) {
+			res.add("FILD " + val);
+		}else {
+			res.add("FLD " + val);
+		}
+	}
+	
+	private void desCargar(SymbolTable st,List<String> res,String val) {
+		if(st.getTipo(val).equals("CTE_INTEGER")) {
+			res.add("FISTP " + val);
+		}else {
+			res.add("FSTP " + val);
+		}
+	}
+	
 	public List<String> Execute(SymbolTable tablaSimbolos) throws Exception {
 		List<String> res;
 		String aux;
@@ -117,55 +142,68 @@ public class NodoIntermedio implements Nodo {
 			case "OP_ASIG":
 				res = new LinkedList<String>();
 				res.addAll(this.der.Execute(tablaSimbolos));
-				res.add("MOV R1," + this.der.getResult());
-				res.add("MOV " + this.izq.getResult() +", R1");
+				this.cargar(tablaSimbolos, res, this.der.getResult());
+				this.desCargar(tablaSimbolos, res, this.izq.getResult());
 				this.result = this.izq.getResult();
 				return res;
 			case "OP_PLUS":
 				res = new LinkedList<String>();
 				res.addAll(this.izq.Execute(tablaSimbolos));
 				res.addAll(this.der.Execute(tablaSimbolos));
-				res.add("MOV R1," + this.izq.getResult());
-				res.add("ADD R1, " + this.der.getResult());
-				aux = getAux();
+				this.cargar(tablaSimbolos, res, this.der.getResult());
+				this.cargar(tablaSimbolos, res, this.izq.getResult());
+				res.add("FADD");
+				aux = getAuxInt(tablaSimbolos);
 				this.result = aux;
-				res.add("MOV "+aux+", R1");
+				this.desCargar(tablaSimbolos, res, aux);
+				res.add("FFREE");
 				return res;
 			case "OP_MINUS":
 				res = new LinkedList<String>();
 				res.addAll(this.izq.Execute(tablaSimbolos));
 				res.addAll(this.der.Execute(tablaSimbolos));
-				res.add("MOV R1," + this.izq.getResult());
-				res.add("SUB R1, " + this.der.getResult());
-				aux = getAux();
+				this.cargar(tablaSimbolos, res, this.izq.getResult());
+				this.cargar(tablaSimbolos, res, this.der.getResult());
+				res.add("FSUB");
+				aux = getAuxInt(tablaSimbolos);
 				this.result = aux;
-				res.add("MOV "+aux+", R1");
+				this.desCargar(tablaSimbolos, res, aux);
+				res.add("FFREE");
 				return res;
 			case "OP_MULTI":
 				res = new LinkedList<String>();
 				res.addAll(this.izq.Execute(tablaSimbolos));
 				res.addAll(this.der.Execute(tablaSimbolos));
-				res.add("MOV R1," + this.izq.getResult());
-				res.add("MUL R1, " + this.der.getResult());
-				aux = getAux();
+				this.cargar(tablaSimbolos, res, this.der.getResult());
+				this.cargar(tablaSimbolos, res, this.izq.getResult());
+				res.add("FMUL");
+				aux = getAuxInt(tablaSimbolos);
 				this.result = aux;
-				res.add("MOV "+aux+", R1");
+				this.desCargar(tablaSimbolos, res, aux);
+				res.add("FFREE");
 				return res;
 			case "OP_DIVISION":
 				res = new LinkedList<String>();
 				res.addAll(this.izq.Execute(tablaSimbolos));
 				res.addAll(this.der.Execute(tablaSimbolos));
-				res.add("MOV R1," + this.izq.getResult());
-				res.add("DIV R1, " + this.der.getResult());
-				aux = getAux();
+				this.cargar(tablaSimbolos, res, this.izq.getResult());
+				this.cargar(tablaSimbolos, res, this.der.getResult());
+				res.add("FDIV");
+				aux = getAuxInt(tablaSimbolos);
 				this.result = aux;
-				res.add("MOV "+aux+", R1");
+				this.desCargar(tablaSimbolos, res, aux);
+				res.add("FFREE");
 				return res;
 			//ejecutar izq, get result, jump if, ejecutar derecha, poner etiqueta para el jump
 			case "IF":
 				res = new LinkedList<String>();
 				res.addAll(this.izq.Execute(tablaSimbolos));
-				res.add("CMP 1," + this.izq.getResult()); //1 verdadero, 0 falso
+				this.cargar(tablaSimbolos, res, this.izq.getResult());
+				res.add("FCOMP __1");
+				res.add("FSTSW AX");
+				res.add("SAHF");
+				res.add("FFREE");
+				//res.add("CMP 1," + this.izq.getResult()); //1 verdadero, 0 falso
 				String tag = "_tag_del_if_"+getAux();
 				if(this.der.getVal() != "True/False" ) 
 					res.add("JZ " + tag); 
@@ -189,7 +227,11 @@ public class NodoIntermedio implements Nodo {
 				String tagInicioWhile = "_tag_del_while_"+getAux();
 				res.add(tagInicioWhile +":");
 				res.addAll(this.izq.Execute(tablaSimbolos));
-				res.add("CMP 1," + this.izq.getResult());
+				this.cargar(tablaSimbolos, res, this.izq.getResult());
+				res.add("FCOMP __1");
+				res.add("FSTSW AX");
+				res.add("SAHF");
+				res.add("FFREE");
 				String tagContinuaWhile = "_tag_del_while_continua"+getAux();
 				res.add("JZ " + tagContinuaWhile); 
 				res.addAll(this.der.Execute(tablaSimbolos));
@@ -204,7 +246,11 @@ public class NodoIntermedio implements Nodo {
 				String tagInicioFor = "_tag_del_for_" + getAux();
 				res.add(tagInicioFor +":");
 				res.addAll(auxIzq);
-				res.add("CMP 1," + this.izq.getResult());
+				this.cargar(tablaSimbolos, res, this.izq.getResult());
+				res.add("FCOMP __1");
+				res.add("FSTSW AX");
+				res.add("SAHF");
+				res.add("FFREE");
 				String tagContinuaFor = "_tag_del_for_continua"+getAux();
 				res.add("JZ " + tagContinuaFor); 
 				res.addAll(this.der.Execute(tablaSimbolos));
@@ -225,7 +271,12 @@ public class NodoIntermedio implements Nodo {
 				cachoDeCodigoMagicoDeForAux.addAll(this.izq.Execute(tablaSimbolos));
 				cachoDeCodigoMagicoDeFor = cachoDeCodigoMagicoDeForAux;
 				res = new LinkedList<String>();
-				res.add("CMP " + this.izq.getResult() +", " + this.der.getResult());
+				this.cargar(tablaSimbolos, res, this.izq.getResult());
+				this.cargar(tablaSimbolos, res, this.der.getResult());
+				res.add("FCOMP");
+				res.add("FSTSW AX");
+				res.add("SAHF");
+				res.add("FFREE");
 				String tagVerdaderoTo = "_tag_de_verdadero_"+getAux();
 				String tagFinTo = "_tag_de_continuar_"+getAux();
 				res.add("JLE " + tagVerdaderoTo); 
@@ -277,45 +328,66 @@ public class NodoIntermedio implements Nodo {
 				return res;
 			case "OP_GTE":
 				res = new LinkedList<String>();
-				res.add("CMP " + this.izq.getResult() +", " + this.der.getResult());
+				this.cargar(tablaSimbolos, res, this.izq.getResult());
+				this.cargar(tablaSimbolos, res, this.der.getResult());
+				res.add("FCOMP");
+				res.add("FSTSW AX");
+				res.add("SAHF");
+				res.add("FFREE");
 				String tagVerdadero = "_tag_de_verdadero_"+getAux();
 				String tagFinGTE = "_tag_de_continuar_"+getAux();
-				res.add("JGE " + tagVerdadero); 
-				aux = getAux();
+				res.add("JAE " + tagVerdadero); 
+				aux = getAuxInt(tablaSimbolos);
 				this.result = aux;
-				res.add("MOV " + aux + ", __0");
+				this.cargar(tablaSimbolos, res, "__0");
+				this.desCargar(tablaSimbolos, res, aux);
 				res.add("JMP " + tagFinGTE); 
 				res.add(tagVerdadero +":");
-				res.add("MOV " + aux + ", __1");
+				this.cargar(tablaSimbolos, res, "__1");
+				this.desCargar(tablaSimbolos, res, aux);
 				res.add(tagFinGTE +":");
 				return res;
 			case "OP_GT":
 				res = new LinkedList<String>();
-				res.add("CMP " + this.izq.getResult() +", " + this.der.getResult());
-				String tagGTVerdadero = "_tag_de_verdadero_"+getAux();
-				String tagFinGT = "_tag_de_continuar_"+getAux();
-				res.add("JG " + tagGTVerdadero); 
-				aux = getAux();
+				this.cargar(tablaSimbolos, res, this.izq.getResult());
+				this.cargar(tablaSimbolos, res, this.der.getResult());
+				res.add("FCOMP");
+				res.add("FSTSW AX");
+				res.add("SAHF");
+				res.add("FFREE");
+				String tagVerdadero2 = "_tag_de_verdadero_"+getAux();
+				String tagFinGTE2 = "_tag_de_continuar_"+getAux();
+				res.add("JA " + tagVerdadero2); 
+				aux = getAuxInt(tablaSimbolos);
 				this.result = aux;
-				res.add("MOV " + aux + ", __0");
-				res.add("JMP " + tagFinGT); 
-				res.add(tagGTVerdadero +":");
-				res.add("MOV " + aux + ", __1");
-				res.add(tagFinGT +":");
+				this.cargar(tablaSimbolos, res, "__0");
+				this.desCargar(tablaSimbolos, res, aux);
+				res.add("JMP " + tagFinGTE2); 
+				res.add(tagVerdadero2 +":");
+				this.cargar(tablaSimbolos, res, "__1");
+				this.desCargar(tablaSimbolos, res, aux);
+				res.add(tagFinGTE2 +":");
 				return res;
 			case "OP_EQ":
 				res = new LinkedList<String>();
-				res.add("CMP " + this.izq.getResult() +", " + this.der.getResult());
-				String tagEQVerdadero = "_tag_de_verdadero_"+getAux();
-				String tagFinEQ = "_tag_de_continuar_"+getAux();
-				res.add("JE " + tagEQVerdadero); 
-				aux = getAux();
+				this.cargar(tablaSimbolos, res, this.izq.getResult());
+				this.cargar(tablaSimbolos, res, this.der.getResult());
+				res.add("FCOMP");
+				res.add("FSTSW AX");
+				res.add("SAHF");
+				res.add("FFREE");
+				String tagVerdadero3 = "_tag_de_verdadero_"+getAux();
+				String tagFinGTE3 = "_tag_de_continuar_"+getAux();
+				res.add("JE " + tagVerdadero3); 
+				aux = getAuxInt(tablaSimbolos);
 				this.result = aux;
-				res.add("MOV " + aux + ", __0");
-				res.add("JMP " + tagFinEQ); 
-				res.add(tagEQVerdadero +":");
-				res.add("MOV " + aux + ", __1");
-				res.add(tagFinEQ +":");
+				this.cargar(tablaSimbolos, res, "__0");
+				this.desCargar(tablaSimbolos, res, aux);
+				res.add("JMP " + tagFinGTE3); 
+				res.add(tagVerdadero3 +":");
+				this.cargar(tablaSimbolos, res, "__1");
+				this.desCargar(tablaSimbolos, res, aux);
+				res.add(tagFinGTE3 +":");
 				return res;
 				
 			default:

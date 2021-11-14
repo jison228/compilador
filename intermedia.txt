@@ -1,11 +1,23 @@
 SIG
    SIG
       SIG
-         declaracion
-         declaracion
-      declaracion
-   OP_ASIG
+         SIG
+            declaracion
+            OP_ASIG
+               a
+               _2
+         OP_ASIG
+            b
+            _3
+      IF
+         OP_GT
+            a
+            _2
+         OP_ASIG
+            a
+            _10
+   DISPLAY
+      NOP
       a
-      _99
 
-Sun Nov 14 01:37:20 ART 2021
+Sun Nov 14 03:53:03 ART 2021
