@@ -89,7 +89,8 @@ public class NodoIntermedio implements Nodo {
 		List<String> res = new LinkedList<String>();
 		
 		res.add(generateHeaders(tablaSimbolos));
-		
+		res.add(".CODE\n\n" + "start:\n" + "MOV EAX,@DATA\n" + "MOV DS,EAX\n" + "MOV ES,EAX\n\n" );
+
 		res.addAll(this.Execute(tablaSimbolos));
 
 		res.add(generateFooters());

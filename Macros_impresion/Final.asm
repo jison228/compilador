@@ -6,13 +6,13 @@ include macros2.asm
 .STACK 200h ;Bytes en el Stack
 
 .DATA
- 	__0	dd	0.0
-	__1	dd	1.0
-	_30_caracteres_es_muy_poco	db	"30 caracteres es muy poco",'$',25 dup(?)
-	a	dd	?
-	b	dd	?
-	c	dd	?
-	e	dd	?
+    __0 dd  0.0
+    __1 dd  1.0
+    _30_caracteres_es_muy_poco  db  "30 caracteres es muy poco",'$',25 dup(?)
+    a   dd  ?
+    b   dd  ?
+    c   dd  ?
+    e   dd  ?
 
 .CODE
 
