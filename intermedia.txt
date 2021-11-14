@@ -1,7 +1,11 @@
 SIG
-   declaracion
-   DISPLAY
-      NOP
-      _30_caracteres_es_muy_poco
+   SIG
+      SIG
+         declaracion
+         declaracion
+      declaracion
+   OP_ASIG
+      a
+      _99
 
-Sun Nov 14 01:14:43 ART 2021
+Sun Nov 14 01:37:20 ART 2021

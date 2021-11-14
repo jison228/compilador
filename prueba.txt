@@ -1,3 +1,5 @@
-DIM [ a, b, c, e ] AS [ integer, integer, integer, integer]
+DIM [ a, b, d, f ] AS [ integer, integer, real ,string]
+DIM [ c, e ] AS [ integer, real]
+DIM [ nousada ] AS [ string]
 
-DISPLAY "30 caracteres es muy poco"
+a := 99

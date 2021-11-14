@@ -235,6 +235,7 @@ termino             ::= termino OP_MULTI factor
 
 factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     {:
+                      	 auxTipo = "CTE_INTEGER";
 	                     punteroFactor.push(new Hoja("_"+CTE_ENT));
                          System.out.println("se apunto punteroFactor a: " + CTE_ENT);
                          tablaDeSimbolos.add("_"+CTE_ENT, "CTE_INTEGER", CTE_ENT, null);

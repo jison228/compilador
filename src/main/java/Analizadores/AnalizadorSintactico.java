@@ -773,6 +773,7 @@ class CUP$AnalizadorSintactico$actions {
 		int CTE_ENTright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String CTE_ENT = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
+                      	 auxTipo = "CTE_INTEGER";
 	                     punteroFactor.push(new Hoja("_"+CTE_ENT));
                          System.out.println("se apunto punteroFactor a: " + CTE_ENT);
                          tablaDeSimbolos.add("_"+CTE_ENT, "CTE_INTEGER", CTE_ENT, null);

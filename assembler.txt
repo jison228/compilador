@@ -8,11 +8,14 @@ include macros2.asm
 .DATA
  	__0	dd	0.0
 	__1	dd	1.0
-	_30_caracteres_es_muy_poco	db	"30 caracteres es muy poco",'$',25 dup(?)
+	_99	dd	99.0
 	a	dd	?
 	b	dd	?
+	d	dd	?
+	f	dd	?
 	c	dd	?
 	e	dd	?
+	nousada	dd	?
 
 .CODE
 
@@ -22,8 +25,8 @@ MOV DS,EAX
 MOV ES,EAX
 
 
-DisplayString _30_caracteres_es_muy_poco
-newline 1
+MOV R1,_99
+MOV a, R1
 MOV EAX, 4C00h
 INT 21h
 
