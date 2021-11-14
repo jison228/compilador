@@ -125,7 +125,7 @@ public class NodoIntermedio implements Nodo {
 				res.addAll(this.izq.Execute(tablaSimbolos));
 				res.addAll(this.der.Execute(tablaSimbolos));
 				res.add("MOV R1," + this.izq.getResult());
-				res.add("FADD R1, " + this.der.getResult());
+				res.add("ADD R1, " + this.der.getResult());
 				aux = getAux();
 				this.result = aux;
 				res.add("MOV "+aux+", R1");
@@ -135,7 +135,7 @@ public class NodoIntermedio implements Nodo {
 				res.addAll(this.izq.Execute(tablaSimbolos));
 				res.addAll(this.der.Execute(tablaSimbolos));
 				res.add("MOV R1," + this.izq.getResult());
-				res.add("FSUB R1, " + this.der.getResult());
+				res.add("SUB R1, " + this.der.getResult());
 				aux = getAux();
 				this.result = aux;
 				res.add("MOV "+aux+", R1");
@@ -145,7 +145,7 @@ public class NodoIntermedio implements Nodo {
 				res.addAll(this.izq.Execute(tablaSimbolos));
 				res.addAll(this.der.Execute(tablaSimbolos));
 				res.add("MOV R1," + this.izq.getResult());
-				res.add("FMUL R1, " + this.der.getResult());
+				res.add("MUL R1, " + this.der.getResult());
 				aux = getAux();
 				this.result = aux;
 				res.add("MOV "+aux+", R1");
@@ -155,7 +155,7 @@ public class NodoIntermedio implements Nodo {
 				res.addAll(this.izq.Execute(tablaSimbolos));
 				res.addAll(this.der.Execute(tablaSimbolos));
 				res.add("MOV R1," + this.izq.getResult());
-				res.add("FDIV R1, " + this.der.getResult());
+				res.add("DIV R1, " + this.der.getResult());
 				aux = getAux();
 				this.result = aux;
 				res.add("MOV "+aux+", R1");
@@ -209,10 +209,10 @@ public class NodoIntermedio implements Nodo {
 				res.addAll(this.der.Execute(tablaSimbolos));
 				res.add("MOV R1," + this.izq.getResult());
 				if(cachoDeCodigoMagicoDeFor_BY == null) {
-					res.add("FADD R1, " + "__1");
+					res.add("ADD R1, " + "__1");
 				}
 				else {
-					res.add("FADD R1, " + cachoDeCodigoMagicoDeFor_BY);
+					res.add("ADD R1, " + cachoDeCodigoMagicoDeFor_BY);
 					cachoDeCodigoMagicoDeFor_BY = null;
 				}
 				res.add("MOV " + this.izq.getResult() +", R1");
