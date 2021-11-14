@@ -241,14 +241,14 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     :}
                     | CONSTANTE_FLOAT:CTE_FLOAT
                     {:
-                    	auxTipo = "CTE_FLOAT";
+                    	 auxTipo = "CTE_FLOAT";
 	                     punteroFactor.push(new Hoja("_"+CTE_FLOAT));
                          System.out.println("se apunto punteroFactor a: " + CTE_FLOAT);
                          tablaDeSimbolos.add("_"+CTE_FLOAT, "CTE_FLOAT", CTE_FLOAT, null);                         
                     :} 
                     | CONSTANTE_STRING:CTE_STRING
                     {:
-                    	auxTipo = "CTE_STRING";
+                    	 auxTipo = "CTE_STRING";
                          System.out.println("se apunto punteroFactor a: " + CTE_STRING);
                          String str = CTE_STRING.replace("\"", "");
 	                     punteroFactor.push( new Hoja("_"+str.replace(" ", "_")));
