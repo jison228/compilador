@@ -1,19 +1,7 @@
 SIG
    declaracion
-   OP_ASIG
-      z
-      OP_PLUS
-         OP_MINUS
-            OP_PLUS
-               a
-               OP_MULTI
-                  b
-                  c
-            OP_DIVISION
-               d
-               OP_PLUS
-                  e
-                  f
-         _20
+   DISPLAY
+      NOP
+      _30_caracteres_es_muy_poco
 
-Sun Nov 07 20:07:50 ART 2021
+Sun Nov 14 00:19:51 ART 2021

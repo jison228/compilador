@@ -1,9 +1,8 @@
 NOMBRE                        |TIPODATO                      |VALOR                         |LONGITUD                      
-_20                           |-                             |20                            |-                             
+__0                           |CTE_INTEGER                   |0                             |-                             
+__1                           |CTE_INTEGER                   |1                             |-                             
+_30_caracteres_es_muy_poco    |CTE_STRING                    |30 caracteres es muy poco     |25                            
 a                             |CTE_INTEGER                   |-                             |-                             
 b                             |CTE_INTEGER                   |-                             |-                             
 c                             |CTE_INTEGER                   |-                             |-                             
-d                             |CTE_INTEGER                   |-                             |-                             
 e                             |CTE_INTEGER                   |-                             |-                             
-f                             |CTE_INTEGER                   |-                             |-                             
-z                             |CTE_INTEGER                   |-                             |-                             
