@@ -109,7 +109,7 @@ public class NodoIntermedio implements Nodo {
 
 		res.add(generateFooters());
 		
-		try (BufferedWriter br = new BufferedWriter(new FileWriter("assembler.txt"))) {
+		try (BufferedWriter br = new BufferedWriter(new FileWriter("Final.asm"))) {
         	
 			for (String string : res) {
 	        	br.write(string + "\n");
