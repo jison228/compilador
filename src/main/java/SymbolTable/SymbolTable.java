@@ -81,7 +81,7 @@ public class SymbolTable {
 
     public String getTipo(String identifier) {
     	
-    	if(identifier.substring(0, 1).equals("_") || identifier.substring(0, 1).equals("@")) {
+    	if(identifier.substring(0, 1).equals("@")) {
     		return "CTE_FLOAT";
     	}
     	

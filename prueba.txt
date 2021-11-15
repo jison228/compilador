@@ -1,11 +1,62 @@
-DIM [ a, b, c, e ] AS [ integer, integer, integer, integer]
+*/ Declaracion variables /* 
+DIM [ a, b, d, f ] AS [ integer, integer, real ,string]
+DIM [ c, e ] AS [ integer, integer]
+DIM [ nousada ] AS [ string]
 
-a:=2
-b:=3
+*/ Asignacion de expresiones /*
+a := 10 + 2*10
+b := 100-10*5-10
 
-if (a > 2)
-    a := 10
+DISPLAY "Si OK Siguiente linea es 30"
+DISPLAY a
+
+DISPLAY "Si OK Siguiente linea es 40"
+DISPLAY b
+
+*/ If con else /*
+if (a > b)
+    DISPLAY "El ifelse funciona"
+else 
+    DISPLAY "El ifelse no funciona"
+ENDIF
+
+DISPLAY "Si if OK sig linea 1"
+*/ If simple /*
+if (b > a)
+    DISPLAY "1"
+ENDIF
+
+*/ If con not /*
+if (!(b > a))
+    DISPLAY "El not si funciona"
 ENDIF
 
 
-display a
+*/ long /*
+e := long ([a,b,c,e])
+DISPLAY "Si long ok 4"
+DISPLAY e
+
+*/ Display /*
+DISPLAY "DisplaySolo OK"
+
+
+DISPLAY "Si while ok un OK"
+*/ While /*
+while (b >= a)
+    a := a+25
+    DISPLAY "OK"
+ENDWHILE
+
+
+DISPLAY "Si for ok dos OK"
+*/ For sin step /*
+FOR a := 2 TO 3
+	DISPLAY "OK FOR"
+NEXT a
+
+DISPLAY "Si for step ok un OK"
+*/ For con step /*
+FOR a := 2 TO 3 [2]
+	DISPLAY "OK FOR STEP"
+NEXT a

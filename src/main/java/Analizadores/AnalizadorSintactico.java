@@ -1210,7 +1210,9 @@ class CUP$AnalizadorSintactico$actions {
               Symbol RESULT =null;
 		
                     	auxTipo = "CTE_INTEGER";
-                    	punteroLong = new Hoja(Integer.toString(IdsCount));
+                    	punteroLong = new Hoja("_long_"+Integer.toString(IdsCount));
+                         tablaDeSimbolos.add("_long_"+Integer.toString(IdsCount), "CTE_FLOAT", Integer.toString(IdsCount), null);
+                         
                          System.out.println("long -> LONG PAREN_OPEN CORCHETE_OPEN identificadoresLong CORCHETE_CLOSE PAREN_CLOSE");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("long",18, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-5)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);

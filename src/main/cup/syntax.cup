@@ -389,7 +389,9 @@ for                ::= FOR asignacion TO expresion {: auxFor = punteroAsignacion
 long                ::= LONG PAREN_OPEN CORCHETE_OPEN identificadoresLong CORCHETE_CLOSE PAREN_CLOSE
                     {:
                     	auxTipo = "CTE_INTEGER";
-                    	punteroLong = new Hoja(Integer.toString(IdsCount));
+                    	punteroLong = new Hoja("_long_"+Integer.toString(IdsCount));
+                         tablaDeSimbolos.add("_long_"+Integer.toString(IdsCount), "CTE_FLOAT", Integer.toString(IdsCount), null);
+                         
                          System.out.println("long -> LONG PAREN_OPEN CORCHETE_OPEN identificadoresLong CORCHETE_CLOSE PAREN_CLOSE");
                     :};
                     

@@ -1,10 +1,32 @@
 NOMBRE                        |TIPODATO                      |VALOR                         |LONGITUD                      
 __0                           |CTE_INTEGER                   |0                             |-                             
 __1                           |CTE_INTEGER                   |1                             |-                             
-_2                            |CTE_INTEGER                   |2                             |-                             
-_3                            |CTE_INTEGER                   |3                             |-                             
 _10                           |CTE_INTEGER                   |10                            |-                             
+_2                            |CTE_INTEGER                   |2                             |-                             
+_100                          |CTE_INTEGER                   |100                           |-                             
+_5                            |CTE_INTEGER                   |5                             |-                             
+_Si_OK_Siguiente_linea_es_30  |CTE_STRING                    |Si OK Siguiente linea es 30   |27                            
+_Si_OK_Siguiente_linea_es_40  |CTE_STRING                    |Si OK Siguiente linea es 40   |27                            
+_El_ifelse_funciona           |CTE_STRING                    |El ifelse funciona            |18                            
+_El_ifelse_no_funciona        |CTE_STRING                    |El ifelse no funciona         |21                            
+_Si_if_OK_sig_linea_1         |CTE_STRING                    |Si if OK sig linea 1          |20                            
+_1                            |CTE_STRING                    |1                             |1                             
+_El_not_si_funciona           |CTE_STRING                    |El not si funciona            |18                            
+_long_4                       |CTE_FLOAT                     |4                             |-                             
+_Si_long_ok_4                 |CTE_STRING                    |Si long ok 4                  |12                            
+_DisplaySolo_OK               |CTE_STRING                    |DisplaySolo OK                |14                            
+_Si_while_ok_un_OK            |CTE_STRING                    |Si while ok un OK             |17                            
+_25                           |CTE_INTEGER                   |25                            |-                             
+_OK                           |CTE_STRING                    |OK                            |2                             
+_Si_for_ok_dos_OK             |CTE_STRING                    |Si for ok dos OK              |16                            
+_3                            |CTE_INTEGER                   |3                             |-                             
+_OK_FOR                       |CTE_STRING                    |OK FOR                        |6                             
+_Si_for_step_ok_un_OK         |CTE_STRING                    |Si for step ok un OK          |20                            
+_OK_FOR_STEP                  |CTE_STRING                    |OK FOR STEP                   |11                            
 a                             |CTE_INTEGER                   |-                             |-                             
 b                             |CTE_INTEGER                   |-                             |-                             
+d                             |CTE_FLOAT                     |-                             |-                             
+f                             |CTE_STRING                    |-                             |-                             
 c                             |CTE_INTEGER                   |-                             |-                             
 e                             |CTE_INTEGER                   |-                             |-                             
+nousada                       |CTE_STRING                    |-                             |-                             

@@ -21,6 +21,7 @@ public class NodoIntermedio implements Nodo {
 	
 	private static List<String> cachoDeCodigoMagicoDeFor = null;
 	private static String cachoDeCodigoMagicoDeFor_BY = null;
+	private static String cachoDeCodigoMagicoDeFor_TO = null;
 	
 	public NodoIntermedio(String val,Nodo izq, Nodo der) {
 		this.val=val;
@@ -65,7 +66,11 @@ public class NodoIntermedio implements Nodo {
 					data += String.format("\t%s\tdb\t%s,'$',%d dup(?)\n", sim.getNombre(), value, length);
 				}				
 				else {
-					value = Double.valueOf(simbolValue).toString();
+					if(sim.getTipo().equals("CTE_INTEGER")) {
+					value = Integer.valueOf(simbolValue).toString();
+					}else {
+						value = Double.valueOf(simbolValue).toString();
+					}
 					data += String.format("\t%s\tdd\t%s\n", sim.getNombre(), value);
 				}
 			}
@@ -228,7 +233,8 @@ public class NodoIntermedio implements Nodo {
 				res.add(tagInicioWhile +":");
 				res.addAll(this.izq.Execute(tablaSimbolos));
 				this.cargar(tablaSimbolos, res, this.izq.getResult());
-				res.add("FCOMP __1");
+				this.cargar(tablaSimbolos, res, "__1");
+				res.add("FCOMP");
 				res.add("FSTSW AX");
 				res.add("SAHF");
 				res.add("FFREE");
@@ -247,22 +253,24 @@ public class NodoIntermedio implements Nodo {
 				res.add(tagInicioFor +":");
 				res.addAll(auxIzq);
 				this.cargar(tablaSimbolos, res, this.izq.getResult());
-				res.add("FCOMP __1");
+				this.cargar(tablaSimbolos, res, "__1");
+				res.add("FCOMP");
 				res.add("FSTSW AX");
 				res.add("SAHF");
 				res.add("FFREE");
 				String tagContinuaFor = "_tag_del_for_continua"+getAux();
 				res.add("JZ " + tagContinuaFor); 
 				res.addAll(this.der.Execute(tablaSimbolos));
-				res.add("MOV R1," + this.izq.getResult());
+				this.cargar(tablaSimbolos, res, cachoDeCodigoMagicoDeFor_TO);
 				if(cachoDeCodigoMagicoDeFor_BY == null) {
-					res.add("ADD R1, " + "__1");
+					this.cargar(tablaSimbolos, res, "__1");
+					res.add("FADD");
 				}
 				else {
-					res.add("ADD R1, " + cachoDeCodigoMagicoDeFor_BY);
+					this.cargar(tablaSimbolos, res,cachoDeCodigoMagicoDeFor_BY);
 					cachoDeCodigoMagicoDeFor_BY = null;
 				}
-				res.add("MOV " + this.izq.getResult() +", R1");
+				this.desCargar(tablaSimbolos, res, cachoDeCodigoMagicoDeFor_TO);
 				res.add("JMP " + tagInicioFor); 
 				res.add(tagContinuaFor +":");
 				return res;
@@ -277,15 +285,18 @@ public class NodoIntermedio implements Nodo {
 				res.add("FSTSW AX");
 				res.add("SAHF");
 				res.add("FFREE");
+				cachoDeCodigoMagicoDeFor_TO = this.izq.getResult();
 				String tagVerdaderoTo = "_tag_de_verdadero_"+getAux();
 				String tagFinTo = "_tag_de_continuar_"+getAux();
 				res.add("JLE " + tagVerdaderoTo); 
-				aux = getAux();
+				aux = getAuxInt(tablaSimbolos);
 				this.result = aux;
-				res.add("MOV " + aux + ", __0");
+				this.cargar(tablaSimbolos, res, "__0");
+				this.desCargar(tablaSimbolos, res, aux);
 				res.add("JMP " + tagFinTo); 
 				res.add(tagVerdaderoTo +":");
-				res.add("MOV " + aux + ", __1");
+				this.cargar(tablaSimbolos, res, "__1");
+				this.desCargar(tablaSimbolos, res, aux);
 				res.add(tagFinTo +":");
 				return res;
 			case "BY":
@@ -317,13 +328,23 @@ public class NodoIntermedio implements Nodo {
 				String tagFinNOT = "_tag_de_continuar_"+getAux();
 				res.addAll(this.der.Execute(tablaSimbolos));
 				String cmpRes = this.der.getResult();
-				res.add("CMP 1," + cmpRes);
+				
+				this.cargar(tablaSimbolos, res, cmpRes);
+				this.cargar(tablaSimbolos, res, "__1");
+				
+				res.add("FCOMP");
+				res.add("FSTSW AX");
+				res.add("SAHF");
+				res.add("FFREE");
+
 				res.add("JZ " + tagFalsoNOT); 
 				this.result = cmpRes;
-				res.add("MOV " + cmpRes + ", __0");
+				this.cargar(tablaSimbolos, res, "__0");
+				this.desCargar(tablaSimbolos, res, cmpRes);
 				res.add("JMP " + tagFinNOT); 
 				res.add(tagFalsoNOT +":");
-				res.add("MOV " + cmpRes + ", __1");
+				this.cargar(tablaSimbolos, res, "__1");
+				this.desCargar(tablaSimbolos, res, cmpRes);
 				res.add(tagFinNOT +":");
 				return res;
 			case "OP_GTE":
