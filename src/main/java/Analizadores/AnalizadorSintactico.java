@@ -456,6 +456,7 @@ class CUP$AnalizadorSintactico$actions {
                     	 punteroInicio = (NodoIntermedio)punteroPrograma.pop();
                          tablaDeSimbolos.save();
                          punteroInicio.save();
+                         punteroInicio.GenerarAsembler(tablaDeSimbolos);
                          System.out.println("Compilacion exitosa.");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("inicio",0, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -772,10 +773,10 @@ class CUP$AnalizadorSintactico$actions {
 		int CTE_ENTright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String CTE_ENT = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-                    	auxTipo = "CTE_INTEGER";
-	                     punteroFactor.push(new Hoja(CTE_ENT));
+                      	 auxTipo = "CTE_INTEGER";
+	                     punteroFactor.push(new Hoja("_"+CTE_ENT));
                          System.out.println("se apunto punteroFactor a: " + CTE_ENT);
-                         tablaDeSimbolos.add("_"+CTE_ENT, null, CTE_ENT, null);
+                         tablaDeSimbolos.add("_"+CTE_ENT, "CTE_INTEGER", CTE_ENT, null);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("factor",10, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -789,10 +790,10 @@ class CUP$AnalizadorSintactico$actions {
 		int CTE_FLOATright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String CTE_FLOAT = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-                    	auxTipo = "CTE_FLOAT";
-	                     punteroFactor.push(new Hoja(CTE_FLOAT));
+                    	 auxTipo = "CTE_FLOAT";
+	                     punteroFactor.push(new Hoja("_"+CTE_FLOAT));
                          System.out.println("se apunto punteroFactor a: " + CTE_FLOAT);
-                         tablaDeSimbolos.add("_"+CTE_FLOAT, null, CTE_FLOAT, null);                         
+                         tablaDeSimbolos.add("_"+CTE_FLOAT, "CTE_FLOAT", CTE_FLOAT, null);                         
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("factor",10, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -806,11 +807,11 @@ class CUP$AnalizadorSintactico$actions {
 		int CTE_STRINGright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		String CTE_STRING = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-                    	auxTipo = "CTE_STRING";
-	                     punteroFactor.push( new Hoja(CTE_STRING));
+                    	 auxTipo = "CTE_STRING";
                          System.out.println("se apunto punteroFactor a: " + CTE_STRING);
                          String str = CTE_STRING.replace("\"", "");
-                         tablaDeSimbolos.add("_"+str, null, str, str.length());
+	                     punteroFactor.push( new Hoja("_"+str.replace(" ", "_")));
+                         tablaDeSimbolos.add("_"+str.replace(" ", "_"), "CTE_STRING", str, str.length());
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("factor",10, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -1194,7 +1195,7 @@ class CUP$AnalizadorSintactico$actions {
                     	if(!this.identifierList.contains(ID)){
                     		throw new Error("Error de sintaxis: El ID '"+ID+"' no ha sido declarado."); 
                     	}
-                    	auxBy = new NodoIntermedio("BY", auxFor, new Hoja(CTE));
+                    	auxBy = new NodoIntermedio("BY", auxFor, new Hoja("_"+CTE));
                     	auxTo = new NodoIntermedio("TO", auxBy, punteroExpresion.pop());
                     	punteroFor = new NodoIntermedio("FOR", auxTo, punteroPrograma.pop());
                          System.out.println("for -> FOR asignacion TO expresion CORCHETE_OPEN CONSTANTE_ENTERA CORCHETE_CLOSE programa NEXT identificador");
@@ -1208,7 +1209,10 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                    	punteroLong = new Hoja(Integer.toString(IdsCount));
+                    	auxTipo = "CTE_INTEGER";
+                    	punteroLong = new Hoja("_long_"+Integer.toString(IdsCount));
+                         tablaDeSimbolos.add("_long_"+Integer.toString(IdsCount), "CTE_FLOAT", Integer.toString(IdsCount), null);
+                         
                          System.out.println("long -> LONG PAREN_OPEN CORCHETE_OPEN identificadoresLong CORCHETE_CLOSE PAREN_CLOSE");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("long",18, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-5)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);

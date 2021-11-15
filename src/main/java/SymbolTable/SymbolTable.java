@@ -18,6 +18,8 @@ public class SymbolTable {
 
     public SymbolTable() {
         this.symbolList = new LinkedList<Simbolo>();
+        this.add("__0", "CTE_INTEGER", "0", null);
+        this.add("__1", "CTE_INTEGER", "1", null);
     }
 
     // Getters & Setters
@@ -74,6 +76,16 @@ public class SymbolTable {
     	   i.remove();
     	   d.remove();
     	}    	
+    }
+    
+
+    public String getTipo(String identifier) {
+    	
+    	if(identifier.substring(0, 1).equals("@")) {
+    		return "CTE_FLOAT";
+    	}
+    	
+    	return this.symbolList.stream().filter(i -> i.getNombre().equals(identifier)).findFirst().get().getTipo();
     }
 
     public Boolean isInTable(String nombre) {

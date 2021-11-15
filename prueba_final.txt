@@ -1,86 +1,62 @@
 */ Declaracion variables /* 
 DIM [ a, b, d, f ] AS [ integer, integer, real ,string]
-DIM [ c, e ] AS [ integer, real]
+DIM [ c, e ] AS [ integer, integer]
 DIM [ nousada ] AS [ string]
 
 */ Asignacion de expresiones /*
-a := 99 + (2)*10
-b := 123 * (234 * 77) - 34
+a := 10 + 2*10
+b := 100-10*5-10
+
+DISPLAY "Si OK Siguiente linea es 30"
+DISPLAY a
+
+DISPLAY "Si OK Siguiente linea es 40"
+DISPLAY b
 
 */ If con else /*
-if (a == b)
-    a := b
-    while (a == b && b != 0) 
-        a := b
-    ENDWHILE
+if (a > b)
+    DISPLAY "El ifelse funciona"
 else 
-    b := a
+    DISPLAY "El ifelse no funciona"
 ENDIF
 
+DISPLAY "Si if OK sig linea 1"
 */ If simple /*
-if (a >= b)
-    a := 10
+if (b > a)
+    DISPLAY "1"
 ENDIF
 
-*/ If con else sin while/*
-if (a >= b)
-    a := 10
-else
-	a := 2
+*/ If con not /*
+if (!(b > a))
+    DISPLAY "El not si funciona"
 ENDIF
 
-*/ While /*
-while (a > 2)
-    b := 0
-ENDWHILE
-
-*/ While con condicion not /*
-while (!(a == b))
-    b := 0
-ENDWHILE
-
-*/ Ciclo anindado /*
-while (!(a == b))
-    while (!(a == b))
-        while (!(a == b))
-            b := 0
-        ENDWHILE
-    ENDWHILE
-ENDWHILE
-
-*/ For sin step /*
-FOR a := 2 TO 7
-	b := 0
-NEXT a
-
-*/ For con step /*
-FOR a := 2 TO 7 [2]
-	b := 0
-NEXT a
 
 */ long /*
-long ([a,b,c,e])
+e := long ([a,b,c,e])
+DISPLAY "Si long ok 4"
+DISPLAY e
 
 */ Display /*
-DISPLAY "30 caracteres es muy poco"
-
-*/ Get /*
-GET b
-
-*/ Descomentar para chequeo de cota enteros /*
-*/a := 65536 /*
+DISPLAY "DisplaySolo OK"
 
 
-*/ Descomentar para chequeo de cota reales/*
-*/a := 4294967296.123 /*
+DISPLAY "Si while ok un OK"
+*/ While /*
+while (b >= a)
+    a := a+25
+    DISPLAY "OK"
+ENDWHILE
 
 
-*/ Descomentar para chequeo de cota strings /*
-*/a := "0123456789012345678901234567891" /*
+DISPLAY "Si for ok dos OK"
+*/ For sin step /*
+FOR a := 2 TO 3
+	DISPLAY "OK FOR"
+NEXT a
 
-*/ Descomentar para chequeo de cota de identificadores /*
-*/DIM [ iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii ] AS [ string] /*
-
-
-
-
+DISPLAY "Si for step ok un OK"
+*/ For con step /*
+FOR a := 2 TO 3 [2]
+	DISPLAY "OK FOR STEP"
+NEXT a
